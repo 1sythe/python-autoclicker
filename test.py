@@ -1,6 +1,9 @@
 import tkinter as tk
 import tkinter.font as font
+
 from tkinter import ttk
+from clicker import Clicker
+from pynput.mouse import Controller, Button
 
 
 def startup():
@@ -19,11 +22,12 @@ def startup():
     font_medium = font.Font(family='Comfortaa', size='20', weight='bold')
     font_small = font.Font(family='Comfortaa', size='15')
 
-    tk.Button(root, text="start", font = font_medium, command=).pack()
-    tk.Button(root, text="stop", font = font_medium, command=).pack()
-
+    clicker = Clicker(0.25, Controller())
+    tk.Button(root, text="start", font=font_medium, command=clicker.start).pack()
+    tk.Button(root, text="stop", font=font_medium, command=clicker.stop).pack()
 
     root.mainloop()
 
 
-startup()
+if __name__ == "__main__":
+    startup()
