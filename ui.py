@@ -1,13 +1,20 @@
 import tkinter as tk
 import tkinter.font as font
 from tkinter import ttk
+import customtkinter
+
 
 def startup():
 
-    root = tk.Tk()
+    root = customtkinter.CTk()
 
     root.geometry('400x300')
     root.resizable(False, False)
+    root.title("Autoclicker")
+    root.option_add("*tearOff", False)
+
+    customtkinter.set_appearance_mode("dark")
+    customtkinter.set_default_color_theme("dark-blue")
 
     style = ttk.Style(root)
     root.tk.call("source", "assets/theme.tcl")
