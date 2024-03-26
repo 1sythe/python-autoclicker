@@ -92,7 +92,7 @@ class AutoClickerApp(customtkinter.CTk):
 
         # CPS unit frame
         mouse_cps_frame = customtkinter.CTkFrame(master=mouse_frame)
-        mouse_cps_frame.place(relx=0, rely=0.3, relwidth=1, relheight=0.45)
+        mouse_cps_frame.place(relx=0, rely=0.34, relwidth=1, relheight=0.45)
 
         customtkinter.CTkLabel(master=mouse_cps_frame, text="Clickspeed in CPS:", font=self.font_small_thick).pack(pady=2)
 
@@ -101,7 +101,7 @@ class AutoClickerApp(customtkinter.CTk):
 
         # Interval unit frame
         mouse_interval_frame = customtkinter.CTkFrame(master=mouse_frame)
-        mouse_interval_frame.place(relx=0, rely=0.3, relwidth=1, relheight=0.45)
+        mouse_interval_frame.place(relx=0, rely=0.34, relwidth=1, relheight=0.45)
         mouse_interval_frame.lower()
 
         mouse_interval_frame.columnconfigure((0, 1, 2), weight=1, uniform='a')
@@ -111,17 +111,19 @@ class AutoClickerApp(customtkinter.CTk):
                                text="Clickspeed interval:", font=self.font_small_thick).grid(column=0, row=0, columnspan=3)
 
         customtkinter.CTkLabel(master=mouse_interval_frame, text="Minutes:", font=self.font_mini).grid(column=0, row=1)
-        self.mouse_minute_entry = customtkinter.CTkEntry(master=mouse_interval_frame, font=self.font_small, width=50)
+        self.mouse_minute_entry = customtkinter.CTkEntry(master=mouse_interval_frame, font=self.font_mini, width=50)
         self.mouse_minute_entry.grid(column=0, row=2, pady=2)
+        self.mouse_minute_entry.insert(0, "0")
 
         customtkinter.CTkLabel(master=mouse_interval_frame, text="Seconds:", font=self.font_mini).grid(column=1, row=1)
         self.mouse_sec_entry = customtkinter.CTkEntry(master=mouse_interval_frame, font=self.font_mini, width=50)
         self.mouse_sec_entry.grid(column=1, row=2, pady=2)
+        self.mouse_sec_entry.insert(0, "0")
 
         customtkinter.CTkLabel(master=mouse_interval_frame, text="Milliseconds:", font=self.font_mini).grid(column=2, row=1)
         self.mouse_milsec_entry = customtkinter.CTkEntry(master=mouse_interval_frame, font=self.font_mini, width=50)
         self.mouse_milsec_entry.grid(column=2, row=2, pady=2)
-
+        self.mouse_milsec_entry.insert(0, "0")
 
 
         # Mbutton selection
