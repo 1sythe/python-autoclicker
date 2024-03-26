@@ -35,6 +35,7 @@ class AutoClickerApp(customtkinter.CTk):
         self.font_large = customtkinter.CTkFont(family='Comfortaa', size=25, weight='bold')
         self.font_medium = customtkinter.CTkFont(family='Comfortaa', size=20, weight='bold')
         self.font_small = customtkinter.CTkFont(family='Comfortaa', size=15)
+        self.font_small_thick = customtkinter.CTkFont(family='Comfortaa', size=14, weight='bold')
         self.font_mini = customtkinter.CTkFont(family='Comfortaa', size=11)
 
     def setup_ui(self):
@@ -72,7 +73,7 @@ class AutoClickerApp(customtkinter.CTk):
         mouse_cps_frame = customtkinter.CTkFrame(master=mouse_frame)
         mouse_cps_frame.place(relx=0, rely=0.22, relwidth=1, relheight=0.45)
 
-        customtkinter.CTkLabel(master=mouse_cps_frame, text="Clickspeed in Cps:", font=self.font_small).pack(pady=2)
+        customtkinter.CTkLabel(master=mouse_cps_frame, text="Clickspeed in Cps:", font=self.font_small_thick).pack(pady=2)
 
         self.mouse_cps_entry = customtkinter.CTkEntry(master=mouse_cps_frame, font=self.font_small, width=50)
         self.mouse_cps_entry.pack(pady=7)
@@ -86,7 +87,7 @@ class AutoClickerApp(customtkinter.CTk):
         mouse_intervall_frame.rowconfigure((0, 1, 2), weight=1, uniform='a')
 
         customtkinter.CTkLabel(master=mouse_intervall_frame,
-                               text="Clickspeed intervall:", font=self.font_small).grid(column=0, row=0, columnspan=3)
+                               text="Clickspeed intervall:", font=self.font_small_thick).grid(column=0, row=0, columnspan=3)
 
         customtkinter.CTkLabel(master=mouse_intervall_frame, text="Minutes:", font=self.font_mini).grid(column=0, row=1)
         self.mouse_minute_entry = customtkinter.CTkEntry(master=mouse_intervall_frame, font=self.font_small, width=50,)
@@ -128,13 +129,21 @@ class AutoClickerApp(customtkinter.CTk):
 
 
         operating_frame.columnconfigure((0, 1, 2), weight=1, uniform='a')
-        operating_frame.rowconfigure((0, 1, 2), weight=1, uniform='a')
+        operating_frame.rowconfigure((0, 1, 2, 3), weight=1, uniform='a')
+
+        # Switch button
+        autoclicker_switch = customtkinter.CTkSwitch(master=operating_frame, text="")
+        autoclicker_switch.grid(column=1, row=0, sticky="e")
+
+        customtkinter.CTkLabel(master=operating_frame, text="Mouse autoclicker", font=self.font_small).grid(column=0, row=0, columnspan=2)
+        customtkinter.CTkLabel(master=operating_frame, text="Key autoclicker", font=self.font_small).grid(column=1, row=0, columnspan=2)
+
 
         start_button = customtkinter.CTkButton(master=operating_frame, text="Start", font=self.font_medium, command=self.start_clicker)
-        start_button.grid(column=0, row=1)
+        start_button.grid(column=0, row=1, rowspan=2)
 
         stop_button = customtkinter.CTkButton(master=operating_frame, text="Stop", font=self.font_medium, command=self.stop_clicker)
-        stop_button.grid(column=2, row=1)
+        stop_button.grid(column=2, row=1, rowspan=2)
 
 
 
