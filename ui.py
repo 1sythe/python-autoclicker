@@ -3,6 +3,7 @@ import tkinter.font as font
 import customtkinter
 import threading
 
+from tkinter import *
 from tkinter import ttk
 from clicker import Clicker
 from pynput.mouse import Controller, Button
@@ -31,7 +32,7 @@ class AutoClickerApp(customtkinter.CTk):
         self.font_large = customtkinter.CTkFont(family='Comfortaa', size=25, weight='bold')
         self.font_medium = customtkinter.CTkFont(family='Comfortaa', size=20, weight='bold')
         self.font_small = customtkinter.CTkFont(family='Comfortaa', size=15)
-        self.font_mini = customtkinter.CTkFont(family='Comfortaa', size=10)
+        self.font_mini = customtkinter.CTkFont(family='Comfortaa', size=11)
 
     def setup_ui(self):
         main_frame = customtkinter.CTkFrame(master=self)
@@ -39,6 +40,8 @@ class AutoClickerApp(customtkinter.CTk):
 
         customtkinter.CTkLabel(master=main_frame, text="AutoClicker", font=self.font_large).pack()
 
+
+        # Mouse autoclicker frame, content
         mouse_frame = customtkinter.CTkFrame(master=main_frame)
         mouse_frame.place(relx=0, rely=0.12, relwidth=0.5, relheight=0.4)
 
@@ -56,13 +59,32 @@ class AutoClickerApp(customtkinter.CTk):
 
         customtkinter.CTkLabel(master=mouse_frame, text="sec", font=self.font_small).grid(column=1, row=2, sticky='w')
 
+        # Mbutton selection
+        mb_selection_var = IntVar()
+
+        mouse_select_leftbutton = customtkinter.CTkRadioButton(master=mouse_frame, text="Left button",
+                                                               font=self.font_mini, value=1, variable=mb_selection_var,
+                                                               radiobutton_height=10, radiobutton_width=10)
+        mouse_select_rightbutton = customtkinter.CTkRadioButton(master=mouse_frame, text="Right button",
+                                                               font=self.font_mini, value=2, variable=mb_selection_var,
+                                                               radiobutton_height=10, radiobutton_width=10)
+
+        mouse_select_leftbutton.grid(column=0, row=3, columnspan=2, rowspan=2, pady=10)
+        mouse_select_rightbutton.grid(column=1, row=3, columnspan=2, rowspan=2, pady=10, padx=25)
+
+
+
+        # Key autoclicker frame, content
         key_frame = customtkinter.CTkFrame(master=main_frame)
         key_frame.place(relx=0.5, rely=0.12, relwidth=0.5, relheight=0.4)
 
         customtkinter.CTkLabel(master=key_frame, text="Keyboard", font=self.font_medium).pack()
 
+
+        # Operating(start/stop) frame, content
         operating_frame = customtkinter.CTkFrame(master=main_frame)
         operating_frame.place(relx=0, rely=0.53, relwidth=1, relheight=0.2)
+
 
         operating_frame.columnconfigure((0, 1, 2), weight=1, uniform='a')
         operating_frame.rowconfigure((0, 1), weight=1, uniform='a')
