@@ -88,4 +88,3 @@ class AutoClickerApp(customtkinter.CTk):
 if __name__ == "__main__":
     app = AutoClickerApp()
     app.mainloop()
-    #threading.Thread(target=AutoClickerApp().mainloop).start()
