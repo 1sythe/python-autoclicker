@@ -203,11 +203,11 @@ class AutoClickerApp(customtkinter.CTk):
         # Start/Stop buttons
         start_button = customtkinter.CTkButton(master=operating_frame, text="Start (F5)", font=self.font_medium,
                                                border_color="#222222", border_width=3, command=start_clicker)
-        start_button.grid(column=0, row=1, rowspan=2)
+        start_button.place(relx=0.01, rely=0.02, relwidth=0.47, relheight=0.4)
 
         stop_button = customtkinter.CTkButton(master=operating_frame, text="Stop (F6)", font=self.font_medium,
                                               border_color="#222222", border_width=3, command=self.stop_clicker)
-        stop_button.grid(column=2, row=1, rowspan=2)
+        stop_button.place(relx=0.52, rely=0.02, relwidth=0.47, relheight=0.4)
 
         # Operating Settings
 
