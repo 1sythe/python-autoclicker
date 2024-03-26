@@ -25,6 +25,24 @@ class AutoClickerApp(customtkinter.CTk):
         self.clicker = Clicker(1, Controller())
         self.click_thread = threading.Thread(target=self.clicker.click, daemon=True)
 
+        self.window = customtkinter.CTkToplevel()
+        self.window.destroy()
+
+    def popup(self, title="Error", message="Something went wrong."):
+        if self.window.winfo_exists():
+            self.window.focus()
+            return
+
+        self.window = customtkinter.CTkToplevel()
+        self.window.title(title)
+        self.window.geometry("300x100")
+        self.window.resizable(False, False)
+
+        customtkinter.CTkLabel(master=self.window, text=message, font=self.font_small).pack(pady=5)
+        customtkinter.CTkButton(master=self.window, text="OK", command=self.window.destroy).pack(pady=5)
+
+        self.window.focus()
+
     def setup_visuals(self):
         customtkinter.set_appearance_mode("dark")
         customtkinter.set_default_color_theme("dark-blue")
@@ -158,44 +176,46 @@ class AutoClickerApp(customtkinter.CTk):
         ###operating_frame.columnconfigure((0, 1, 2, 3), weight=1, uniform='a')
         ###operating_frame.rowconfigure((0, 1, 2, 3), weight=1, uniform='a')
 
+        def start_clicker():
+            if self.clicker.running:
+                return
+
+            if self.mousespeed_unit_choice == "CPS":
+                try:
+                    self.clicker.interval = 1 / float(self.mouse_cps_entry.get())
+                except:
+                    self.popup(title="Error", message="Please enter a valid number.")
+                    return
+            else:
+                try:
+                    minutes = float(self.mouse_minute_entry.get()) * 60
+                    seconds = float(self.mouse_sec_entry.get())
+                    milliseconds = float(self.mouse_milsec_entry.get()) / 1000
+                    self.clicker.interval = minutes + seconds + milliseconds
+                except:
+                    self.popup(title="Error", message="Please enter a valid number.")
+                    return
+
+            self.click_thread = threading.Thread(target=self.clicker.click, daemon=True)
+            self.click_thread.start()
+
 
         # Start/Stop buttons
         start_button = customtkinter.CTkButton(master=operating_frame, text="Start (F5)", font=self.font_medium,
-                                               border_color="#222222", border_width=3, command=self.start_clicker)
+                                               border_color="#222222", border_width=3, command=start_clicker)
         start_button.grid(column=0, row=1, rowspan=2)
 
         stop_button = customtkinter.CTkButton(master=operating_frame, text="Stop (F6)", font=self.font_medium,
                                               border_color="#222222", border_width=3, command=self.stop_clicker)
         stop_button.grid(column=2, row=1, rowspan=2)
 
-
         # Operating Settings
 
-
-
-
-
-
-    def start_clicker(self):
-        if self.clicker.running:
+    def stop_clicker(self):
+        if not self.clicker.running:
+            self.popup(title="Error", message="AutoClicker is not running.")
             return
 
-        if self.mbutton_select_optionmenu.get() == "Cps":
-            self.clicker.interval = 1 / float(self.mouse_cps_entry.get())
-        else:
-            try:
-                minutes = float(self.mouse_minute_entry.get()) * 60
-                seconds = float(self.mouse_sec_entry.get())
-                milliseconds = float(self.mouse_milsec_entry.get()) / 1000
-                self.clicker.interval = minutes + seconds + milliseconds
-            except TypeError or ValueError:
-                print("[DEBUG] Caught TypeError: Expected float, got String or None")
-
-
-
-        self.click_thread.start()
-
-    def stop_clicker(self):
         # TODO: add metrics
         self.clicker.running = False
 
