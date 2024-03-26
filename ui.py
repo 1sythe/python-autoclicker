@@ -230,7 +230,28 @@ class AutoClickerApp(customtkinter.CTk):
 
         # Change Hotkey button
         def change_hotkey_popup():
-            pass
+
+            window = customtkinter.CTkToplevel()
+            window.title("Start/Stop Hotkeys")
+            window.geometry("300x100")
+            window.resizable(False, False)
+
+            customtkinter.CTkLabel(master=window, text="Start", font=self.font_small_thick).place(relx=0.2, rely=0.15,
+                                                                                                 relwidth=0.25, relheight=0.2)
+            customtkinter.CTkLabel(master=window, text="Stop", font=self.font_small_thick).place(relx=0.55, rely=0.15,
+                                                                                                 relwidth=0.25, relheight=0.2)
+
+            start_hotkey_entry = customtkinter.CTkEntry(master=window, font=self.font_small_thick)
+
+            stop_hotkey_entry = customtkinter.CTkEntry(master=window, font=self.font_small_thick)
+
+            start_hotkey_entry.place(relx=0.2, rely=0.35, relwidth=0.25, relheight=0.2)
+            stop_hotkey_entry.place(relx=0.55, rely=0.35, relwidth=0.25, relheight=0.2)
+
+            customtkinter.CTkButton(master=window, text="Save", command=window.destroy).place(relx=0.25, rely=0.7,
+                                                                                                     relwidth=0.5, relheight=0.2)
+            window.focus()
+
 
         change_hotkey_button = customtkinter.CTkButton(master=operating_frame, text="Change Hotkeys", font=self.font_medium,
                                                        fg_color="#3b3b3b", hover_color="#636363",
