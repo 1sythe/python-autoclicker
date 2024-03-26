@@ -3,6 +3,9 @@
 
 A versatile multi-function auto clicker designed to streamline repetitive tasks. With customizable intervals, mouse and keyboard buttons can be effortlessly automated. Whether for gaming, testing, or productivity enhancement, this auto clicker offers flexibility and ease of use. Additionally, it provides statistics, allowing users to track all time clicks.
 
+![Commit-Activity](https://img.shields.io/github/commit-activity/m/kiisuhh/python-autoclicker)
+![Forks](https://img.shields.io/github/forks/kiisuhh/python-autoclicker)
+![Stargazers](https://img.shields.io/github/stars/kiisuhh/python-autoclicker)
 
 ## Features
 
