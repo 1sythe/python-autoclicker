@@ -107,7 +107,7 @@ class AutoClickerApp(customtkinter.CTk):
                                                         radiobutton_height=11, border_width_checked=2, border_width_unchecked=2)
 
         self.mousespeed_unit_option_cps.grid(column=0, row=0, columnspan=3, rowspan=2)
-        self.mousespeed_unit_option_interval.grid(column=2, row=0, columnspan=2, rowspan=2, stick="we")
+        self.mousespeed_unit_option_interval.grid(column=2, row=0, columnspan=2, rowspan=2, stick="w")
 
 
         # CPS unit frame
