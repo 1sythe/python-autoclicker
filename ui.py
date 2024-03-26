@@ -29,6 +29,10 @@ class AutoClickerApp(customtkinter.CTk):
         self.window.destroy()
 
     def popup(self, title="Error", message="Something went wrong."):
+        if self.window.winfo_exists():
+            self.window.focus()
+            return
+
         self.window = customtkinter.CTkToplevel()
         self.window.title(title)
         self.window.geometry("300x100")
@@ -180,10 +184,6 @@ class AutoClickerApp(customtkinter.CTk):
             if self.clicker.running:
                 return
 
-            if self.window.winfo_exists():
-                self.window.focus()
-                return
-
             if self.mousespeed_unit_choice == "CPS":
                 try:
                     self.clicker.interval = 1 / float(self.mouse_cps_entry.get())
@@ -213,11 +213,13 @@ class AutoClickerApp(customtkinter.CTk):
                                               border_color="#222222", border_width=3, command=self.stop_clicker)
         stop_button.grid(column=2, row=1, rowspan=2)
 
-
         # Operating Settings
 
-
     def stop_clicker(self):
+        if not self.clicker.running:
+            self.popup(title="Error", message="AutoClicker is not running.")
+            return
+
         # TODO: add metrics
         self.clicker.running = False
 
