@@ -61,7 +61,7 @@ class AutoClickerApp(customtkinter.CTk):
         main_frame = customtkinter.CTkFrame(master=self)
         main_frame.pack(pady=3, padx=3, fill="both", expand=True)
 
-        customtkinter.CTkLabel(master=main_frame, text="AutoClicker", font=self.font_medium).pack(side="top")
+        customtkinter.CTkLabel(master=main_frame, text="AutoClicker", font=self.font_large).pack(side="top")
 
         # Autoclicker select
         def autoclickerswitch_event(choice):
@@ -72,7 +72,7 @@ class AutoClickerApp(customtkinter.CTk):
                 mouse_frame.lift()
 
         self.autoclicker_option = customtkinter.CTkOptionMenu(master=main_frame, values=["Mouse", "Keyboard"],
-                                                              width=30, height=20, command=autoclickerswitch_event)
+                                                              width=40, height=25, command=autoclickerswitch_event)
         self.autoclicker_option.pack(side="top", pady=3)
 
 
@@ -173,9 +173,6 @@ class AutoClickerApp(customtkinter.CTk):
         operating_frame.place(relx=0, rely=0.69, relwidth=1, relheight=0.31)
 
 
-        ###operating_frame.columnconfigure((0, 1, 2, 3), weight=1, uniform='a')
-        ###operating_frame.rowconfigure((0, 1, 2, 3), weight=1, uniform='a')
-
         def start_clicker():
             if self.clicker.running:
                 return
@@ -209,7 +206,27 @@ class AutoClickerApp(customtkinter.CTk):
                                               border_color="#222222", border_width=3, command=self.stop_clicker)
         stop_button.place(relx=0.52, rely=0.02, relwidth=0.47, relheight=0.4)
 
-        # Operating Settings
+        ## Operating Settings
+
+        # Delay slider
+        customtkinter.CTkLabel(master=operating_frame, text="Set start delay:", font=self.font_small_thick).place(relx=0.02, rely=0.5)
+
+        def startdelay_display_update(value):
+            self.startdelay_display.configure(text=f"{value}s")
+            self.startdelay = value
+
+        self.startdelay_display = customtkinter.CTkLabel(master=operating_frame, text="0.0s", font=self.font_small)
+        self.startdelay_display.place(relx=0.4, rely=0.5)
+
+        self.startdelay = 0
+
+        self.startdelay_slider = customtkinter.CTkSlider(master=operating_frame, from_=0, to=15, number_of_steps=15,
+                                                          command=startdelay_display_update)
+
+        self.startdelay_slider.place(relx=0.01, rely=0.75, relwidth=0.45)
+        self.startdelay_slider.set(0)
+
+
 
     def stop_clicker(self):
         if not self.clicker.running:
