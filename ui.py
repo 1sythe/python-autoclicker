@@ -14,7 +14,7 @@ class AutoClickerApp(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        self.geometry('300x350')
+        self.geometry('300x400')
         self.resizable(False, False)
         self.title("AutoClicker")
         self.option_add("*tearOff", False)
@@ -60,7 +60,7 @@ class AutoClickerApp(customtkinter.CTk):
 
         # Mouse autoclicker frame, content
         mouse_frame = customtkinter.CTkFrame(master=main_frame, border_width=2, border_color="#3b3b3b")
-        mouse_frame.place(relx=0.01, rely=0.18, relwidth=0.98, relheight=0.55)
+        mouse_frame.place(relx=0.01, rely=0.18, relwidth=0.98, relheight=0.5)
 
         mouse_frame.columnconfigure((0, 1, 2, 3), weight=1, uniform='a')
         mouse_frame.rowconfigure((0, 1, 2, 3, 4, 5, 6), weight=1, uniform='a')
@@ -143,7 +143,7 @@ class AutoClickerApp(customtkinter.CTk):
 
         # Key autoclicker frame, content
         key_frame = customtkinter.CTkFrame(master=main_frame, border_width=2, border_color="#3b3b3b")
-        key_frame.place(relx=0.01, rely=0.18, relwidth=0.98, relheight=0.55)
+        key_frame.place(relx=0.01, rely=0.18, relwidth=0.98, relheight=0.5)
         key_frame.lower()
 
 
@@ -152,11 +152,11 @@ class AutoClickerApp(customtkinter.CTk):
 
         # Operating(start/stop) frame, content
         operating_frame = customtkinter.CTkFrame(master=main_frame)
-        operating_frame.place(relx=0, rely=0.76, relwidth=1, relheight=0.2)
+        operating_frame.place(relx=0, rely=0.69, relwidth=1, relheight=0.31)
 
 
-        operating_frame.columnconfigure((0, 1, 2), weight=1, uniform='a')
-        operating_frame.rowconfigure((0, 1, 2, 3), weight=1, uniform='a')
+        ###operating_frame.columnconfigure((0, 1, 2, 3), weight=1, uniform='a')
+        ###operating_frame.rowconfigure((0, 1, 2, 3), weight=1, uniform='a')
 
 
         # Start/Stop buttons
