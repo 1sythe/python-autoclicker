@@ -46,13 +46,13 @@ class AutoClickerApp(customtkinter.CTk):
 
         # Mouse autoclicker frame, content
         mouse_frame = customtkinter.CTkFrame(master=main_frame)
-        mouse_frame.place(relx=0, rely=0.12, relwidth=0.5, relheight=0.4)
+        mouse_frame.place(relx=0, rely=0.12, relwidth=0.495, relheight=0.4)
 
         mouse_frame.columnconfigure((0, 1, 2, 3), weight=1, uniform='a')
         mouse_frame.rowconfigure((0, 1, 2, 3, 4, 5), weight=1, uniform='a')
 
-        customtkinter.CTkLabel(master=mouse_frame, text="Mouse", font=self.font_medium).grid(column=0, row=0,
-                                                                                             sticky="e", columnspan=2)
+        customtkinter.CTkLabel(master=mouse_frame, text="Mouse", font=self.font_medium).grid(column=1, row=0,
+                                                                                             sticky="w", columnspan=3)
 
         # Clickspeedunitframe, content
 
@@ -63,12 +63,12 @@ class AutoClickerApp(customtkinter.CTk):
             else:
                 mouse_cps_frame.lift()
 
-        mouse_speed_unit_combobox = customtkinter.CTkComboBox(master=mouse_frame, values=["Cps", "Intervall"],
-                                                              command=change_mousespeed_unit, state="readonly")
-        mouse_speed_unit_combobox.grid(column=2, row=0, columnspan=2, padx=10, pady=2)
+        mouse_speed_unit_optionmenu = customtkinter.CTkOptionMenu(master=mouse_frame, values=["Cps", "Intervall"],
+                                                              command=change_mousespeed_unit, width=100)
+        mouse_speed_unit_optionmenu.grid(column=2, row=0, padx=5, pady=3, sticky="w", columnspan=2)
 
 
-        #cpsframe
+        # Cpsunit frame
         mouse_cps_frame = customtkinter.CTkFrame(master=mouse_frame)
         mouse_cps_frame.place(relx=0, rely=0.22, relwidth=1, relheight=0.45)
 
@@ -77,7 +77,7 @@ class AutoClickerApp(customtkinter.CTk):
         self.mouse_cps_entry = customtkinter.CTkEntry(master=mouse_cps_frame, font=self.font_small, width=50)
         self.mouse_cps_entry.pack(pady=7)
 
-        #intervall frame
+        # Intervallunit frame
         mouse_intervall_frame = customtkinter.CTkFrame(master=mouse_frame)
         mouse_intervall_frame.place(relx=0, rely=0.22, relwidth=1, relheight=0.45)
         mouse_intervall_frame.lower()
@@ -104,25 +104,20 @@ class AutoClickerApp(customtkinter.CTk):
 
         # Mbutton selection
 
-        customtkinter.CTkLabel(master=mouse_frame, text="Select Mousebutton:", font=self.font_small).grid(column=0, row=4, columnspan=4)
+        customtkinter.CTkLabel(master=mouse_frame, text="Select Mousebutton:", font=self.font_small).grid(column=0, row=4,
+                                                                            columnspan=2, rowspan=2, pady=10, padx=2)
 
-        mb_selection_var = IntVar()
 
-        mouse_select_leftbutton = customtkinter.CTkRadioButton(master=mouse_frame, text="Left button",
-                                                               font=self.font_mini, value=1, variable=mb_selection_var,
-                                                               radiobutton_height=10, radiobutton_width=10)
-        mouse_select_rightbutton = customtkinter.CTkRadioButton(master=mouse_frame, text="Right button",
-                                                               font=self.font_mini, value=2, variable=mb_selection_var,
-                                                               radiobutton_height=10, radiobutton_width=10)
+        mbutton_select_optionmenu = customtkinter.CTkOptionMenu(master=mouse_frame,
+                                                                values=["Left button", "Right button"], width=50, height=20)
 
-        mouse_select_leftbutton.grid(column=0, row=5, columnspan=2, rowspan=2, pady=0, padx=10)
-        mouse_select_rightbutton.grid(column=3, row=5, columnspan=2, rowspan=2, pady=0)
+        mbutton_select_optionmenu.grid(column=2, row=4, columnspan=2, rowspan=2, pady=10, sticky="w")
 
 
 
         # Key autoclicker frame, content
         key_frame = customtkinter.CTkFrame(master=main_frame)
-        key_frame.place(relx=0.5, rely=0.12, relwidth=0.5, relheight=0.4)
+        key_frame.place(relx=0.5, rely=0.12, relwidth=0.495, relheight=0.4)
 
         customtkinter.CTkLabel(master=key_frame, text="Keyboard", font=self.font_medium).pack()
 
@@ -133,13 +128,15 @@ class AutoClickerApp(customtkinter.CTk):
 
 
         operating_frame.columnconfigure((0, 1, 2), weight=1, uniform='a')
-        operating_frame.rowconfigure((0, 1), weight=1, uniform='a')
+        operating_frame.rowconfigure((0, 1, 2), weight=1, uniform='a')
 
         start_button = customtkinter.CTkButton(master=operating_frame, text="Start", font=self.font_medium, command=self.start_clicker)
-        start_button.pack(padx=5, side="left")
+        start_button.grid(column=0, row=1)
 
         stop_button = customtkinter.CTkButton(master=operating_frame, text="Stop", font=self.font_medium, command=self.stop_clicker)
-        stop_button.pack(padx=5, side="right")
+        stop_button.grid(column=2, row=1)
+
+
 
     def start_clicker(self):
         self.clicker.interval = float(self.mouse_interval_entry.get())
