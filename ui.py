@@ -10,7 +10,7 @@ def startup():
 
     root.geometry('400x300')
     root.resizable(False, False)
-    root.title("Autoclicker")
+    root.title("AutoClicker")
     root.option_add("*tearOff", False)
 
     customtkinter.set_appearance_mode("dark")
