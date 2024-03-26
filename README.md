@@ -20,7 +20,7 @@ A versatile multi-function auto clicker designed to streamline repetitive tasks.
    ```sh
    git clone https://github.com/1sythe/python-autoclicker
    ```
-3. Install required packages
+2. Install required packages
    ```sh
    pip install -r requirements.txt
    ```
