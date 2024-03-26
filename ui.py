@@ -51,7 +51,8 @@ class AutoClickerApp(customtkinter.CTk):
         mouse_frame.columnconfigure((0, 1, 2, 3), weight=1, uniform='a')
         mouse_frame.rowconfigure((0, 1, 2, 3, 4, 5), weight=1, uniform='a')
 
-        customtkinter.CTkLabel(master=mouse_frame, text="Mouse", font=self.font_medium).grid(column=0, row=0, sticky="e", columnspan=2)
+        customtkinter.CTkLabel(master=mouse_frame, text="Mouse", font=self.font_medium).grid(column=0, row=0,
+                                                                                             sticky="e", columnspan=2)
 
         # Clickspeedunitframe, content
 
