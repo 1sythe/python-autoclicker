@@ -100,6 +100,8 @@ class AutoClickerApp(customtkinter.CTk):
         self.mousespeed_unit_option_cps = customtkinter.CTkRadioButton(master=mouse_frame, text="CPS", font=self.font_small_thick,
                                                         command=change_mousespeed_unit, variable=radio_var, value=1, radiobutton_width=11,
                                                                     radiobutton_height=11, border_width_checked=2, border_width_unchecked=2)
+        self.mousespeed_unit_option_cps.select()
+
         self.mousespeed_unit_option_interval = customtkinter.CTkRadioButton(master=mouse_frame, text="Interval", font=self.font_small_thick,
                                                         command=change_mousespeed_unit, variable=radio_var, value=2, radiobutton_width=11,
                                                         radiobutton_height=11, border_width_checked=2, border_width_unchecked=2)
