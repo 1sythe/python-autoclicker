@@ -67,9 +67,9 @@ class AutoClickerApp(customtkinter.CTk):
             else:
                 mouse_cps_frame.lift()
 
-        mouse_speed_unit_optionmenu = customtkinter.CTkOptionMenu(master=mouse_frame, values=["CPS", "Interval"],
+        self.mouse_speed_unit_optionmenu = customtkinter.CTkOptionMenu(master=mouse_frame, values=["CPS", "Interval"],
                                                               command=change_mousespeed_unit, width=100)
-        mouse_speed_unit_optionmenu.grid(column=2, row=0, padx=5, pady=3, sticky="w", columnspan=2)
+        self.mouse_speed_unit_optionmenu.grid(column=2, row=0, padx=5, pady=3, sticky="w", columnspan=2)
 
 
         # CPS unit frame
@@ -112,10 +112,10 @@ class AutoClickerApp(customtkinter.CTk):
                                                                             columnspan=2, rowspan=2, pady=10, padx=2)
 
 
-        mbutton_select_optionmenu = customtkinter.CTkOptionMenu(master=mouse_frame,
+        self.mbutton_select_optionmenu = customtkinter.CTkOptionMenu(master=mouse_frame,
                                                                 values=["Left button", "Right button"], width=50, height=20)
 
-        mbutton_select_optionmenu.grid(column=2, row=4, columnspan=2, rowspan=2, pady=10, sticky="w")
+        self.mbutton_select_optionmenu.grid(column=2, row=4, columnspan=2, rowspan=2, pady=10, sticky="w")
 
 
 
@@ -141,8 +141,6 @@ class AutoClickerApp(customtkinter.CTk):
         autoclicker_option_choice = "Mouse Autoclicker"
 
         def autoclickerswitch_event(choice):
-            global autoclicker_option_choice
-            autoclicker_option_choice = choice
             if choice == "Key Autoclicker":
                 mouse_frame.configure(fg_color="#222222")
                 key_frame.configure(fg_color="#3b3b3b")
@@ -151,9 +149,9 @@ class AutoClickerApp(customtkinter.CTk):
                 key_frame.configure(fg_color="#222222")
                 mouse_frame.configure(fg_color="#3b3b3b")
 
-        autoclicker_option = customtkinter.CTkOptionMenu(master=operating_frame,
+        self.autoclicker_option = customtkinter.CTkOptionMenu(master=operating_frame,
                                                          values=["Mouse Autoclicker", "Key Autoclicker"], command=autoclickerswitch_event)
-        autoclicker_option.grid(column=1, row=0, columnspan=2)
+        self.autoclicker_option.grid(column=1, row=0, columnspan=2)
 
         # Start/Stop buttons
         start_button = customtkinter.CTkButton(master=operating_frame, text="Start (F5)", font=self.font_medium,
@@ -176,7 +174,7 @@ class AutoClickerApp(customtkinter.CTk):
         if self.clicker.running:
             return
 
-        if self.mouse_speed_unit_combobox.get() == "Cps":
+        if self.mbutton_select_optionmenu.get() == "Cps":
             self.clicker.interval = 1 / float(self.mouse_cps_entry.get())
         else:
             try:
