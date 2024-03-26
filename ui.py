@@ -19,6 +19,8 @@ class AutoClickerApp(customtkinter.CTk):
         self.title("AutoClicker")
         self.option_add("*tearOff", False)
 
+
+
         self.setup_visuals()
         self.setup_ui()
 
@@ -225,6 +227,17 @@ class AutoClickerApp(customtkinter.CTk):
 
         self.startdelay_slider.place(relx=0.01, rely=0.75, relwidth=0.45)
         self.startdelay_slider.set(0)
+
+
+        # Change Hotkey button
+        def change_hotkey_popup():
+            pass
+
+        change_hotkey_button = customtkinter.CTkButton(master=operating_frame, text="Change Hotkeys", font=self.font_medium,
+                                                       fg_color="#3b3b3b", hover_color="#636363",
+                                                       border_color="#222222", border_width=3, command=change_hotkey_popup)
+        change_hotkey_button.place(relx=0.52, rely=0.5, relwidth=0.47, relheight=0.4)
+
 
 
 
