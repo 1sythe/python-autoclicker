@@ -53,17 +53,39 @@ class AutoClickerApp(customtkinter.CTk):
 
         customtkinter.CTkLabel(master=mouse_frame, text="Mouse", font=self.font_medium).grid(column=0, row=0, sticky="e", columnspan=2)
 
-        # Clickspeedframe, content
+        # Clickspeedunitframe, content
         mouse_speed_unit_combobox = customtkinter.CTkComboBox(master=mouse_frame, values=["Cps", "Intervall"])
         mouse_speed_unit_combobox.grid(column=2, row=0, columnspan=2, padx=10, pady=2)
-
+        #cpsframe
         mouse_cps_frame = customtkinter.CTkFrame(master=mouse_frame)
-        mouse_cps_frame.place(relx=0, rely=0.22, relwidth=1, relheight=0.4)
+        #mouse_cps_frame.place(relx=0, rely=0.22, relwidth=1, relheight=0.4)
 
         customtkinter.CTkLabel(master=mouse_cps_frame, text="Clickspeed in Cps:", font=self.font_small).pack(pady=2)
 
-        self.mouse_speed_entry = customtkinter.CTkEntry(master=mouse_cps_frame, font=self.font_small, width=50)
-        self.mouse_speed_entry.pack(pady=5)
+        self.mouse_cps_entry = customtkinter.CTkEntry(master=mouse_cps_frame, font=self.font_small, width=50)
+        self.mouse_cps_entry.pack(pady=5)
+
+        #intervall frame
+        mouse_intervall_frame = customtkinter.CTkFrame(master=mouse_frame)
+        mouse_intervall_frame.place(relx=0, rely=0.22, relwidth=1, relheight=0.45)
+
+        mouse_intervall_frame.columnconfigure((0, 1, 2), weight=1, uniform='a')
+        mouse_intervall_frame.rowconfigure((0, 1, 2), weight=1, uniform='a')
+
+        customtkinter.CTkLabel(master=mouse_intervall_frame,
+                               text="Clickspeed intervall:", font=self.font_small).grid(column=0, row=0, columnspan=3)
+
+        customtkinter.CTkLabel(master=mouse_intervall_frame, text="Minutes:", font=self.font_mini).grid(column=0, row=1)
+        self.mouse_minute_entry = customtkinter.CTkEntry(master=mouse_intervall_frame, font=self.font_small, width=50,)
+        self.mouse_minute_entry.grid(column=0, row=2, pady=2)
+
+        customtkinter.CTkLabel(master=mouse_intervall_frame, text="Seconds:", font=self.font_mini).grid(column=1, row=1)
+        self.mouse_sec_entry = customtkinter.CTkEntry(master=mouse_intervall_frame, font=self.font_mini, width=50)
+        self.mouse_sec_entry.grid(column=1, row=2, pady=2)
+
+        customtkinter.CTkLabel(master=mouse_intervall_frame, text="Milliseconds:", font=self.font_mini).grid(column=2, row=1)
+        self.mouse_milsec_entry = customtkinter.CTkEntry(master=mouse_intervall_frame, font=self.font_mini, width=50)
+        self.mouse_milsec_entry.grid(column=2, row=2, pady=2)
 
 
 
