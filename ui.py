@@ -46,7 +46,7 @@ class AutoClickerApp(customtkinter.CTk):
 
 
         # Mouse autoclicker frame, content
-        mouse_frame = customtkinter.CTkFrame(master=main_frame)
+        mouse_frame = customtkinter.CTkFrame(master=main_frame, fg_color="#3b3b3b")
         mouse_frame.place(relx=0, rely=0.12, relwidth=0.495, relheight=0.4)
 
         mouse_frame.columnconfigure((0, 1, 2, 3), weight=1, uniform='a')
@@ -56,11 +56,13 @@ class AutoClickerApp(customtkinter.CTk):
                                                                                              sticky="w", columnspan=3)
 
         # Clickspeedunitframe, content
+        mousespeed_unit_choice = "Cps"
 
         def change_mousespeed_unit(choice):
+            global mousespeed_unit_choice
+            mousespeed_unit_choice = choice
             if choice == "Intervall":
                 mouse_intervall_frame.lift()
-
             else:
                 mouse_cps_frame.lift()
 
@@ -71,7 +73,7 @@ class AutoClickerApp(customtkinter.CTk):
 
         # Cpsunit frame
         mouse_cps_frame = customtkinter.CTkFrame(master=mouse_frame)
-        mouse_cps_frame.place(relx=0, rely=0.22, relwidth=1, relheight=0.45)
+        mouse_cps_frame.place(relx=0.095, rely=0.22, relwidth=0.8, relheight=0.45)
 
         customtkinter.CTkLabel(master=mouse_cps_frame, text="Clickspeed in Cps:", font=self.font_small_thick).pack(pady=2)
 
@@ -80,7 +82,7 @@ class AutoClickerApp(customtkinter.CTk):
 
         # Intervallunit frame
         mouse_intervall_frame = customtkinter.CTkFrame(master=mouse_frame)
-        mouse_intervall_frame.place(relx=0, rely=0.22, relwidth=1, relheight=0.45)
+        mouse_intervall_frame.place(relx=0.095, rely=0.22, relwidth=0.8, relheight=0.45)
         mouse_intervall_frame.lower()
 
         mouse_intervall_frame.columnconfigure((0, 1, 2), weight=1, uniform='a')
@@ -131,12 +133,29 @@ class AutoClickerApp(customtkinter.CTk):
         operating_frame.columnconfigure((0, 1, 2), weight=1, uniform='a')
         operating_frame.rowconfigure((0, 1, 2, 3), weight=1, uniform='a')
 
-        # Switch button
-        autoclicker_switch = customtkinter.CTkSwitch(master=operating_frame, text="")
-        autoclicker_switch.grid(column=1, row=0, sticky="e")
+        # Autoclickerswitch logic
+        customtkinter.CTkLabel(master=operating_frame,
+                               text="Select Autoclicker:", font=self.font_small_thick).grid(column=0, row=0, columnspan=2)
 
-        customtkinter.CTkLabel(master=operating_frame, text="Mouse autoclicker", font=self.font_small).grid(column=0, row=0, columnspan=2)
-        customtkinter.CTkLabel(master=operating_frame, text="Key autoclicker", font=self.font_small).grid(column=1, row=0, columnspan=2)
+        autoclicker_option_choice = "Mouse Autoclicker"
+
+        def autoclickerswitch_event(choice):
+            global autoclicker_option_choice
+            autoclicker_option_choice = choice
+            if choice == "Key Autoclicker":
+                mouse_frame.configure(fg_color="#222222")
+                key_frame.configure(fg_color="#3b3b3b")
+
+            else:
+                key_frame.configure(fg_color="#222222")
+                mouse_frame.configure(fg_color="#3b3b3b")
+
+        autoclicker_option = customtkinter.CTkOptionMenu(master=operating_frame,
+                                                         values=["Mouse Autoclicker", "Key Autoclicker"], command=autoclickerswitch_event)
+        autoclicker_option.grid(column=1, row=0, columnspan=2)
+
+
+
 
 
         start_button = customtkinter.CTkButton(master=operating_frame, text="Start", font=self.font_medium, command=self.start_clicker)
@@ -159,4 +178,5 @@ class AutoClickerApp(customtkinter.CTk):
 if __name__ == "__main__":
     app = AutoClickerApp()
     app.mainloop()
+
     #threading.Thread(target=AutoClickerApp().mainloop).start()
