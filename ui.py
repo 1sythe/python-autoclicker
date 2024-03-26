@@ -8,7 +8,7 @@ from clicker import Clicker
 from pynput.mouse import Controller, Button
 
 
-class AutoClickerApp(tk.Tk):
+class AutoClickerApp(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
@@ -46,7 +46,7 @@ class AutoClickerApp(tk.Tk):
         mouse_frame.rowconfigure((0, 1, 2, 3, 4), weight=1, uniform='a')
 
         customtkinter.CTkLabel(master=mouse_frame, text="Mouse", font=self.font_medium).grid(column=1, row=0, sticky="nswe")
-        customtkinter.CTkLabel(master=mouse_frame, text="Speed", font=self.font_small).grid(column=0, row=1, sticky="w", columnspan=2)
+        customtkinter.CTkLabel(master=mouse_frame, text="Speed", font=self.font_small).grid(column=0, row=1,  padx=5, sticky="w", columnspan=2)
 
         self.mouse_interval_entry = customtkinter.CTkEntry(master=mouse_frame, font=self.font_mini, placeholder_text="Interval")
         self.mouse_interval_entry.grid(column=0, row=2, padx=5)
