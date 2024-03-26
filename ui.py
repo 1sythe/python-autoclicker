@@ -21,6 +21,9 @@ class AutoClickerApp(customtkinter.CTk):
         self.setup_visuals()
         self.setup_ui()
 
+        self.clicker = Clicker(1, Controller())
+        self.click_thread = threading.Thread(target=self.clicker.click, daemon=True)
+
     def setup_visuals(self):
         customtkinter.set_appearance_mode("dark")
         customtkinter.set_default_color_theme("dark-blue")
@@ -96,15 +99,15 @@ class AutoClickerApp(customtkinter.CTk):
         stop_button.pack(padx=5, side="right")
 
     def start_clicker(self):
-        interval = float(self.mouse_interval_entry.get())
+        self.clicker.interval = float(self.mouse_interval_entry.get())
+        self.click_thread.start()
 
     def stop_clicker(self):
-        pass
+        # TODO: add metrics
+        self.clicker.running = False
 
 
 if __name__ == "__main__":
-    clicker = Clicker(0.25, Controller())
-
     app = AutoClickerApp()
     app.mainloop()
     #threading.Thread(target=AutoClickerApp().mainloop).start()
