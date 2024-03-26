@@ -106,13 +106,13 @@ class AutoClickerApp(customtkinter.CTk):
                                                         command=change_mousespeed_unit, variable=radio_var, value=2, radiobutton_width=11,
                                                         radiobutton_height=11, border_width_checked=2, border_width_unchecked=2)
 
-        self.mousespeed_unit_option_cps.grid(column=1, row=0, padx=5, pady=3, sticky="", columnspan=2, rowspan=2, stick="w")
-        self.mousespeed_unit_option_interval.grid(column=2, row=0, padx=5, pady=2, sticky="", columnspan=2, rowspan=2, stick="w")
+        self.mousespeed_unit_option_cps.grid(column=0, row=0, columnspan=3, rowspan=2)
+        self.mousespeed_unit_option_interval.grid(column=2, row=0, columnspan=2, rowspan=2, stick="we")
 
 
         # CPS unit frame
         mouse_cps_frame = customtkinter.CTkFrame(master=mouse_frame, fg_color="#282928")
-        mouse_cps_frame.place(relx=0.01, rely=0.34, relwidth=0.98, relheight=0.4)
+        mouse_cps_frame.place(relx=0.01, rely=0.32, relwidth=0.98, relheight=0.4)
 
         customtkinter.CTkLabel(master=mouse_cps_frame, text="Clickspeed in CPS:", font=self.font_small_thick).pack(pady=2)
 
@@ -121,7 +121,7 @@ class AutoClickerApp(customtkinter.CTk):
 
         # Interval unit frame
         mouse_interval_frame = customtkinter.CTkFrame(master=mouse_frame, fg_color="#282928")
-        mouse_interval_frame.place(relx=0.01, rely=0.34, relwidth=0.98, relheight=0.4)
+        mouse_interval_frame.place(relx=0.01, rely=0.32, relwidth=0.98, relheight=0.4)
         mouse_interval_frame.lower()
 
         mouse_interval_frame.columnconfigure((0, 1, 2), weight=1, uniform='a')
