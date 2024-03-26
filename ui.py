@@ -154,15 +154,20 @@ class AutoClickerApp(customtkinter.CTk):
                                                          values=["Mouse Autoclicker", "Key Autoclicker"], command=autoclickerswitch_event)
         autoclicker_option.grid(column=1, row=0, columnspan=2)
 
-
-
-
-
-        start_button = customtkinter.CTkButton(master=operating_frame, text="Start", font=self.font_medium, command=self.start_clicker)
+        # Start/Stop buttons
+        start_button = customtkinter.CTkButton(master=operating_frame, text="Start (F5)", font=self.font_medium,
+                                               border_color="#222222", border_width=3, command=self.start_clicker)
         start_button.grid(column=0, row=1, rowspan=2)
 
-        stop_button = customtkinter.CTkButton(master=operating_frame, text="Stop", font=self.font_medium, command=self.stop_clicker)
+        stop_button = customtkinter.CTkButton(master=operating_frame, text="Stop (F6)", font=self.font_medium,
+                                              border_color="#222222", border_width=3, command=self.stop_clicker)
         stop_button.grid(column=2, row=1, rowspan=2)
+
+
+        # Operating Settings
+
+
+
 
 
 
