@@ -33,5 +33,5 @@ A versatile multi-function auto clicker designed to streamline repetitive tasks.
 - [ ] All-time stats
 - [ ] Multiple Languages
     - [X] English
-    - [ ] Deutsch
+    - [ ] German
 
