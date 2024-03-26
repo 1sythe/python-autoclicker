@@ -18,7 +18,7 @@ class AutoClickerApp(customtkinter.CTk):
         self.resizable(False, False)
         self.title("AutoClicker")
         self.option_add("*tearOff", False)
-        self.iconbitmap("assets/icon.ico")
+
 
         self.setup_visuals()
         self.setup_ui()
