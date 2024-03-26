@@ -62,9 +62,9 @@ class AutoClickerApp(customtkinter.CTk):
             else:
                 mouse_cps_frame.lift()
 
-        mouse_speed_unit_combobox = customtkinter.CTkComboBox(master=mouse_frame, values=["Cps", "Intervall"],
+        self.mouse_speed_unit_combobox = customtkinter.CTkComboBox(master=mouse_frame, values=["Cps", "Intervall"],
                                                               command=change_mousespeed_unit, state="readonly")
-        mouse_speed_unit_combobox.grid(column=2, row=0, columnspan=2, padx=10, pady=2)
+        self.mouse_speed_unit_combobox.grid(column=2, row=0, columnspan=2, padx=10, pady=2)
 
 
         #cpsframe
@@ -141,12 +141,27 @@ class AutoClickerApp(customtkinter.CTk):
         stop_button.pack(padx=5, side="right")
 
     def start_clicker(self):
-        self.clicker.interval = float(self.mouse_interval_entry.get())
+        if self.clicker.running:
+            return
+
+        if self.mouse_speed_unit_combobox.get() == "Cps":
+            self.clicker.interval = 1 / float(self.mouse_cps_entry.get())
+        else:
+            try:
+                minutes = float(self.mouse_minute_entry.get()) * 60
+                seconds = float(self.mouse_sec_entry.get())
+                milliseconds = float(self.mouse_milsec_entry.get()) / 1000
+                self.clicker.interval = minutes + seconds + milliseconds
+            except TypeError or ValueError:
+                print("[DEBUG] Caught TypeError: Expected float, got String or None")
+
+
+
         self.click_thread.start()
 
     def stop_clicker(self):
         # TODO: add metrics
-        self.clicker.running = False
+        self.clicker.stop()
 
 
 if __name__ == "__main__":
