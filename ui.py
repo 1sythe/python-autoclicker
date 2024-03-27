@@ -318,7 +318,7 @@ class AutoClickerApp(customtkinter.CTk):
                                                         wraplength=110, justify="center")
             hotkey_window_info.pack(pady=16)
 
-            customtkinter.CTkButton(master=self.hotkey_window, text="Save", command=self.hotkey_window.destroy()).place(relx=0.375, rely=0.7,
+            customtkinter.CTkButton(master=self.hotkey_window, text="Save", command=self.hotkey_window.destroy).place(relx=0.375, rely=0.7,
                                                                                                      relwidth=0.25, relheight=0.2)
             self.hotkey_window.focus()
 
