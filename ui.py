@@ -237,7 +237,6 @@ class AutoClickerApp(customtkinter.CTk):
         self.hotkey_stop = "F6"
 
 
-
         def change_hotkey_popup():
 
             if self.hotkey_window.winfo_exists():
@@ -272,6 +271,7 @@ class AutoClickerApp(customtkinter.CTk):
                             start_hotkey_entry.insert(0, self.hotkey_start)
                             start_hotkey_entry.configure(state=DISABLED)
                             hotkey_window_info.configure(text="Click to change")
+                            start_button.configure(text=f"Start ({self.hotkey_start})")
                             break
 
             def change_stop_hotkey(filler):
@@ -291,6 +291,7 @@ class AutoClickerApp(customtkinter.CTk):
                             stop_hotkey_entry.insert(0, self.hotkey_stop)
                             stop_hotkey_entry.configure(state=DISABLED)
                             hotkey_window_info.configure(text="Click to change")
+                            stop_button.configure(text=f"Stop ({self.hotkey_stop})")
                             break
 
 
@@ -309,12 +310,7 @@ class AutoClickerApp(customtkinter.CTk):
                                                         wraplength=110, justify="center")
             hotkey_window_info.pack(pady=16)
 
-            def update_mainframe_hotkeys():
-                start_button.configure(text=f"Start ({self.hotkey_start})")
-                stop_button.configure(text=f"Stop ({self.hotkey_stop})")
-                self.hotkey_window.destroy()
-
-            customtkinter.CTkButton(master=self.hotkey_window, text="Save", command=update_mainframe_hotkeys).place(relx=0.375, rely=0.7,
+            customtkinter.CTkButton(master=self.hotkey_window, text="Save", command=self.hotkey_window.destroy()).place(relx=0.375, rely=0.7,
                                                                                                      relwidth=0.25, relheight=0.2)
             self.hotkey_window.focus()
 
