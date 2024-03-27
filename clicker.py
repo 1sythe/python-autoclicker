@@ -114,3 +114,4 @@ if __name__ == "__main__":
     threading.Thread(target=clicker.click).start()
     time.sleep(5)
     clicker.stop()
+

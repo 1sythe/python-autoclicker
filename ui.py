@@ -3,7 +3,7 @@ import tkinter as tk
 import tkinter.font as font
 import customtkinter
 import threading
-
+import clicker
 
 from tkinter import *
 from tkinter import ttk
@@ -64,7 +64,7 @@ class AutoClickerApp(customtkinter.CTk):
         self.font_small_thick = customtkinter.CTkFont(family='Comfortaa', size=15, weight='bold')
         self.font_mini = customtkinter.CTkFont(family='Comfortaa', size=11)
 
-        self.icon_histogram = ImageTk.PhotoImage(Image.open("assets/histogram.png").resize((20,20)))
+        self.icon_histogram = customtkinter.CTkImage(Image.open("assets/histogram.png"), size=(20, 20))
 
     def setup_ui(self):
         main_frame = customtkinter.CTkFrame(master=self)
@@ -294,6 +294,7 @@ class AutoClickerApp(customtkinter.CTk):
                                 stop_hotkey_entry.configure(state=DISABLED)
                                 hotkey_window_info.configure(text="Click to change")
                                 break
+                            #clicker.update_stop_key(event.key)
                             self.hotkey_stop = format(event.key).strip("Key.'").upper()
                             stop_hotkey_entry.insert(0, self.hotkey_stop)
                             stop_hotkey_entry.configure(state=DISABLED)
@@ -327,11 +328,11 @@ class AutoClickerApp(customtkinter.CTk):
                                                        border_color="#222222", border_width=3, command=change_hotkey_popup)
         change_hotkey_button.place(relx=0.52, rely=0.5, relwidth=0.47, relheight=0.4)
 
-        # Overall stats interface
-        stats_open_button = customtkinter.CTkButton(master=main_frame, image=self.icon_histogram, text="", fg_color="#3b3b3b",
-                                                    width=20, hover_color="#636363")
-        stats_open_button.place(relx=0.02, rely=0.01)
 
+        # Overall stats interface
+        stats_open_button = customtkinter.CTkButton(master=main_frame, image=self.icon_histogram, text="", font=self.font_small, fg_color="#3b3b3b",
+                                                     width=20, hover_color="#636363")
+        stats_open_button.place(relx=0.02, rely=0.01)
 
 
 
