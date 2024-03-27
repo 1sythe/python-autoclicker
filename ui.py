@@ -8,7 +8,7 @@ from tkinter import *
 from tkinter import ttk
 from clicker import Clicker
 from pynput.mouse import Controller, Button
-
+from pynput import keyboard
 
 class AutoClickerApp(customtkinter.CTk):
     def __init__(self):
@@ -28,6 +28,9 @@ class AutoClickerApp(customtkinter.CTk):
 
         self.window = customtkinter.CTkToplevel()
         self.window.destroy()
+
+        self.hotkey_window = customtkinter.CTkToplevel()
+        self.hotkey_window.destroy()
 
     def popup(self, title="Error", message="Something went wrong."):
         if self.window.winfo_exists():
@@ -229,11 +232,17 @@ class AutoClickerApp(customtkinter.CTk):
 
 
         # Change Hotkey button
+        self.hotkey_start = "f5"
+        self.hotkey_stop = "f6"
+
+
+
         def change_hotkey_popup():
 
             if self.hotkey_window.winfo_exists():
                 self.hotkey_window.focus()
                 return
+
 
             self.hotkey_window = customtkinter.CTkToplevel()
             self.hotkey_window.title("Start/Stop Hotkeys")
@@ -243,14 +252,50 @@ class AutoClickerApp(customtkinter.CTk):
             customtkinter.CTkLabel(master=self.hotkey_window, text="Start", font=self.font_small_thick).place(relx=0.2, rely=0.15,
                                                                                                  relwidth=0.25, relheight=0.2)
             customtkinter.CTkLabel(master=self.hotkey_window, text="Stop", font=self.font_small_thick).place(relx=0.55, rely=0.15,
-                                                                                                 relwidth=0.25, relheight=0.2)
+                                                                                                relwidth=0.25, relheight=0.2)
+            # Hotkey change logic
+            def change_start_hotkey(filler):
+                start_hotkey_entry.configure(state=NORMAL)
+                start_hotkey_entry.delete(0, END)
+                with keyboard.Events() as events:
+                    for event in events:
+                        if isinstance(event, keyboard.Events.Press):
+                            if event.key == keyboard.Key.esc:
+                                start_hotkey_entry.insert(0, self.hotkey_start)
+                                start_hotkey_entry.configure(state=DISABLED)
+                                break
+                            self.hotkey_start = format(event.key).strip("Key.'")
+                            start_hotkey_entry.insert(0, self.hotkey_start)
+                            start_hotkey_entry.configure(state=DISABLED)
+                            break
+
+            def change_stop_hotkey(filler):
+                stop_hotkey_entry.configure(state=NORMAL)
+                stop_hotkey_entry.delete(0, END)
+                with keyboard.Events() as events:
+                    for event in events:
+                        if isinstance(event, keyboard.Events.Press):
+                            if event.key == keyboard.Key.esc:
+                                stop_hotkey_entry.insert(0, self.hotkey_stop)
+                                stop_hotkey_entry.configure(state=DISABLED)
+                                break
+                            self.hotkey_stop = format(event.key).strip("Key.'")
+                            stop_hotkey_entry.insert(0, self.hotkey_stop)
+                            stop_hotkey_entry.configure(state=DISABLED)
+                            break
+
 
             start_hotkey_entry = customtkinter.CTkEntry(master=self.hotkey_window, font=self.font_small_thick)
+            start_hotkey_entry.insert(0, self.hotkey_start)
+            start_hotkey_entry.bind("<1>", change_start_hotkey)
 
             stop_hotkey_entry = customtkinter.CTkEntry(master=self.hotkey_window, font=self.font_small_thick)
+            stop_hotkey_entry.insert(0, self.hotkey_stop)
+            stop_hotkey_entry.bind("<1>", change_stop_hotkey)
 
-            start_hotkey_entry.place(relx=0.2, rely=0.35, relwidth=0.25, relheight=0.2)
-            stop_hotkey_entry.place(relx=0.55, rely=0.35, relwidth=0.25, relheight=0.2)
+            start_hotkey_entry.place(relx=0.25, rely=0.35, relwidth=0.15, relheight=0.2)
+            stop_hotkey_entry.place(relx=0.6, rely=0.35, relwidth=0.15, relheight=0.2)
+
 
 
             customtkinter.CTkButton(master=self.hotkey_window, text="Save", command=self.hotkey_window.destroy).place(relx=0.375, rely=0.7,
