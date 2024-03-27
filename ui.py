@@ -3,7 +3,7 @@ import tkinter as tk
 import tkinter.font as font
 import customtkinter
 import threading
-import clicker
+
 
 from tkinter import *
 from tkinter import ttk
@@ -268,12 +268,13 @@ class AutoClickerApp(customtkinter.CTk):
                 self.hotkey_window.update()
                 with keyboard.Events() as events:
                     for event in events:
-                        if isinstance(event, keyboard.Events.Press):
-                            if event.key == keyboard.Key.esc or format(event.key).strip("Key.'").upper() == self.hotkey_stop:
+                        if event.key == keyboard.Key.esc or format(event.key).strip("Key.'").upper() == self.hotkey_stop:
                                 start_hotkey_entry.insert(0, self.hotkey_start)
                                 start_hotkey_entry.configure(state=DISABLED)
                                 hotkey_window_info.configure(text="Click to change")
                                 break
+                        else:
+                            #Clicker.update_start_key(self, new_start_key=event.key)
                             self.hotkey_start = format(event.key).strip("Key.'").upper()
                             start_hotkey_entry.insert(0, self.hotkey_start)
                             start_hotkey_entry.configure(state=DISABLED)
@@ -283,18 +284,18 @@ class AutoClickerApp(customtkinter.CTk):
 
             def change_stop_hotkey(filler):
                 hotkey_window_info.configure(text="Recording, press ESC to cancel")
+                self.hotkey_window.update()
                 stop_hotkey_entry.configure(state=NORMAL)
                 stop_hotkey_entry.delete(0, END)
-                self.hotkey_window.update()
                 with keyboard.Events() as events:
                     for event in events:
-                        if isinstance(event, keyboard.Events.Press):
-                            if event.key == keyboard.Key.esc or format(event.key).strip("Key.'").upper() == self.hotkey_start:
-                                stop_hotkey_entry.insert(0, self.hotkey_stop)
-                                stop_hotkey_entry.configure(state=DISABLED)
-                                hotkey_window_info.configure(text="Click to change")
-                                break
-                            #clicker.update_stop_key(event.key)
+                        if event.key == keyboard.Key.esc or format(event.key).strip("Key.'").upper() == self.hotkey_start:
+                            stop_hotkey_entry.insert(0, self.hotkey_stop)
+                            stop_hotkey_entry.configure(state=DISABLED)
+                            hotkey_window_info.configure(text="Click to change")
+                            break
+                        else:
+                            #Clicker.update_stop_key(self, new_stop_key=event.key)
                             self.hotkey_stop = format(event.key).strip("Key.'").upper()
                             stop_hotkey_entry.insert(0, self.hotkey_stop)
                             stop_hotkey_entry.configure(state=DISABLED)
