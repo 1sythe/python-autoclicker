@@ -4,6 +4,7 @@ import tkinter.font as font
 import customtkinter
 import threading
 
+
 from tkinter import *
 from tkinter import ttk
 from clicker import Clicker
@@ -249,39 +250,47 @@ class AutoClickerApp(customtkinter.CTk):
             self.hotkey_window.geometry("300x100")
             self.hotkey_window.resizable(False, False)
 
-            customtkinter.CTkLabel(master=self.hotkey_window, text="Start", font=self.font_small_thick).place(relx=0.2, rely=0.15,
+            customtkinter.CTkLabel(master=self.hotkey_window, text="Start", font=self.font_small_thick).place(relx=0.1, rely=0.15,
                                                                                                  relwidth=0.25, relheight=0.2)
-            customtkinter.CTkLabel(master=self.hotkey_window, text="Stop", font=self.font_small_thick).place(relx=0.55, rely=0.15,
+            customtkinter.CTkLabel(master=self.hotkey_window, text="Stop", font=self.font_small_thick).place(relx=0.65, rely=0.15,
                                                                                                 relwidth=0.25, relheight=0.2)
             # Hotkey change logic
             def change_start_hotkey(filler):
+                hotkey_window_info.configure(text="Recording press ESC to cancel")
                 start_hotkey_entry.configure(state=NORMAL)
                 start_hotkey_entry.delete(0, END)
+                self.hotkey_window.update()
                 with keyboard.Events() as events:
                     for event in events:
                         if isinstance(event, keyboard.Events.Press):
                             if event.key == keyboard.Key.esc:
                                 start_hotkey_entry.insert(0, self.hotkey_start)
                                 start_hotkey_entry.configure(state=DISABLED)
+                                hotkey_window_info.configure(text="Click to change")
                                 break
                             self.hotkey_start = format(event.key).strip("Key.'")
                             start_hotkey_entry.insert(0, self.hotkey_start)
                             start_hotkey_entry.configure(state=DISABLED)
+                            hotkey_window_info.configure(text="Click to change")
                             break
 
             def change_stop_hotkey(filler):
+                hotkey_window_info.configure(text="Recording press ESC to cancel")
                 stop_hotkey_entry.configure(state=NORMAL)
                 stop_hotkey_entry.delete(0, END)
+                self.hotkey_window.update()
                 with keyboard.Events() as events:
                     for event in events:
                         if isinstance(event, keyboard.Events.Press):
                             if event.key == keyboard.Key.esc:
                                 stop_hotkey_entry.insert(0, self.hotkey_stop)
                                 stop_hotkey_entry.configure(state=DISABLED)
+                                hotkey_window_info.configure(text="Click to change")
                                 break
                             self.hotkey_stop = format(event.key).strip("Key.'")
                             stop_hotkey_entry.insert(0, self.hotkey_stop)
                             stop_hotkey_entry.configure(state=DISABLED)
+                            hotkey_window_info.configure(text="Click to change")
                             break
 
 
@@ -293,10 +302,12 @@ class AutoClickerApp(customtkinter.CTk):
             stop_hotkey_entry.insert(0, self.hotkey_stop)
             stop_hotkey_entry.bind("<1>", change_stop_hotkey)
 
-            start_hotkey_entry.place(relx=0.25, rely=0.35, relwidth=0.15, relheight=0.2)
-            stop_hotkey_entry.place(relx=0.6, rely=0.35, relwidth=0.15, relheight=0.2)
+            start_hotkey_entry.place(relx=0.15, rely=0.35, relwidth=0.15, relheight=0.2)
+            stop_hotkey_entry.place(relx=0.7, rely=0.35, relwidth=0.15, relheight=0.2)
 
-
+            hotkey_window_info = customtkinter.CTkLabel(master=self.hotkey_window, text="Click to change", font=self.font_small,
+                                                        wraplength=110, justify="center")
+            hotkey_window_info.pack(pady=16)
 
             customtkinter.CTkButton(master=self.hotkey_window, text="Save", command=self.hotkey_window.destroy).place(relx=0.375, rely=0.7,
                                                                                                      relwidth=0.25, relheight=0.2)
