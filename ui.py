@@ -231,26 +231,31 @@ class AutoClickerApp(customtkinter.CTk):
         # Change Hotkey button
         def change_hotkey_popup():
 
-            window = customtkinter.CTkToplevel()
-            window.title("Start/Stop Hotkeys")
-            window.geometry("300x100")
-            window.resizable(False, False)
+            if self.hotkey_window.winfo_exists():
+                self.hotkey_window.focus()
+                return
 
-            customtkinter.CTkLabel(master=window, text="Start", font=self.font_small_thick).place(relx=0.2, rely=0.15,
+            self.hotkey_window = customtkinter.CTkToplevel()
+            self.hotkey_window.title("Start/Stop Hotkeys")
+            self.hotkey_window.geometry("300x100")
+            self.hotkey_window.resizable(False, False)
+
+            customtkinter.CTkLabel(master=self.hotkey_window, text="Start", font=self.font_small_thick).place(relx=0.2, rely=0.15,
                                                                                                  relwidth=0.25, relheight=0.2)
-            customtkinter.CTkLabel(master=window, text="Stop", font=self.font_small_thick).place(relx=0.55, rely=0.15,
+            customtkinter.CTkLabel(master=self.hotkey_window, text="Stop", font=self.font_small_thick).place(relx=0.55, rely=0.15,
                                                                                                  relwidth=0.25, relheight=0.2)
 
-            start_hotkey_entry = customtkinter.CTkEntry(master=window, font=self.font_small_thick)
+            start_hotkey_entry = customtkinter.CTkEntry(master=self.hotkey_window, font=self.font_small_thick)
 
-            stop_hotkey_entry = customtkinter.CTkEntry(master=window, font=self.font_small_thick)
+            stop_hotkey_entry = customtkinter.CTkEntry(master=self.hotkey_window, font=self.font_small_thick)
 
             start_hotkey_entry.place(relx=0.2, rely=0.35, relwidth=0.25, relheight=0.2)
             stop_hotkey_entry.place(relx=0.55, rely=0.35, relwidth=0.25, relheight=0.2)
 
-            customtkinter.CTkButton(master=window, text="Save", command=window.destroy).place(relx=0.25, rely=0.7,
-                                                                                                     relwidth=0.5, relheight=0.2)
-            window.focus()
+
+            customtkinter.CTkButton(master=self.hotkey_window, text="Save", command=self.hotkey_window.destroy).place(relx=0.375, rely=0.7,
+                                                                                                     relwidth=0.25, relheight=0.2)
+            self.hotkey_window.focus()
 
 
         change_hotkey_button = customtkinter.CTkButton(master=operating_frame, text="Change Hotkeys", font=self.font_medium,
