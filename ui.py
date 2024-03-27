@@ -342,13 +342,24 @@ class AutoClickerApp(customtkinter.CTk):
             self.stats_window.geometry("250x300")
             self.stats_window.resizable(False, False)
 
-            self.stats_window.columnconfigure((0, 1, 2), weight=1, uniform='a')
-            self.stats_window.rowconfigure((0, 1, 2, 3, 4, 5, 6, 7, 8, 9), weight=1, uniform='a')
 
-            customtkinter.CTkLabel(master=self.stats_window, text="Overall stats", font=self.font_large).grid(column=0, row=0, columnspan=3)
+            customtkinter.CTkLabel(master=self.stats_window, text="Overall stats", font=self.font_large).pack(pady=15)
+
+            # Stats:
+            stat_1 = customtkinter.CTkFrame(master=self.stats_window, fg_color="#3b3b3b")
+            stat_1.pack(pady=5, padx=8, fill=X)
+            customtkinter.CTkLabel(master=stat_1, text="Statlongschlong 1:", font=self.font_medium).pack(side = LEFT, padx=5)
+            customtkinter.CTkLabel(master=stat_1, text="value", font=self.font_small).pack(side=RIGHT, padx=10)
+
+            stat_2 = customtkinter.CTkFrame(master=self.stats_window, fg_color="#3b3b3b")
+            stat_2.pack(pady=3, padx=8, fill=X)
+            customtkinter.CTkLabel(master=stat_2, text="Statlongschlong 2:", font=self.font_medium).pack(side=LEFT, padx=5)
+            customtkinter.CTkLabel(master=stat_2, text="value", font=self.font_small).pack(side=RIGHT, padx=10)
+
 
 
             self.stats_window.focus()
+
 
 
         stats_open_button = customtkinter.CTkButton(master=main_frame, image=self.icon_histogram, text="", font=self.font_small, fg_color="#3b3b3b",
