@@ -4,7 +4,6 @@ import tkinter.font as font
 import customtkinter
 import threading
 
-
 from tkinter import *
 from tkinter import ttk
 from clicker import Clicker
@@ -34,6 +33,9 @@ class AutoClickerApp(customtkinter.CTk):
 
         self.hotkey_window = customtkinter.CTkToplevel()
         self.hotkey_window.destroy()
+
+        self.stats_window = customtkinter.CTkToplevel()
+        self.stats_window.destroy()
 
     def popup(self, title="Error", message="Something went wrong."):
         if self.window.winfo_exists():
@@ -244,12 +246,11 @@ class AutoClickerApp(customtkinter.CTk):
         self.hotkey_stop = "F6"
 
 
-        def change_hotkey_popup():
+        def open_hotkey_window():
 
             if self.hotkey_window.winfo_exists():
                 self.hotkey_window.focus()
                 return
-
 
             self.hotkey_window = customtkinter.CTkToplevel()
             self.hotkey_window.title("Start/Stop Hotkeys")
@@ -326,13 +327,32 @@ class AutoClickerApp(customtkinter.CTk):
 
         change_hotkey_button = customtkinter.CTkButton(master=operating_frame, text="Change Hotkeys", font=self.font_medium,
                                                        fg_color="#3b3b3b", hover_color="#636363",
-                                                       border_color="#222222", border_width=3, command=change_hotkey_popup)
+                                                       border_color="#222222", border_width=3, command=open_hotkey_window)
         change_hotkey_button.place(relx=0.52, rely=0.5, relwidth=0.47, relheight=0.4)
 
 
         # Overall stats interface
+        def open_stats_window():
+            if self.stats_window.winfo_exists():
+                self.stats_window.focus()
+                return
+
+            self.stats_window = customtkinter.CTkToplevel()
+            self.stats_window.title("Overall Stats")
+            self.stats_window.geometry("250x300")
+            self.stats_window.resizable(False, False)
+
+            self.stats_window.columnconfigure((0, 1, 2), weight=1, uniform='a')
+            self.stats_window.rowconfigure((0, 1, 2, 3, 4, 5, 6, 7, 8, 9), weight=1, uniform='a')
+
+            customtkinter.CTkLabel(master=self.stats_window, text="Overall stats", font=self.font_large).grid(column=0, row=0, columnspan=3)
+
+
+            self.stats_window.focus()
+
+
         stats_open_button = customtkinter.CTkButton(master=main_frame, image=self.icon_histogram, text="", font=self.font_small, fg_color="#3b3b3b",
-                                                     width=20, hover_color="#636363")
+                                                     width=20, hover_color="#636363", command=open_stats_window)
         stats_open_button.place(relx=0.02, rely=0.01)
 
 
