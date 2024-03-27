@@ -10,6 +10,8 @@ from tkinter import ttk
 from clicker import Clicker
 from pynput.mouse import Controller, Button
 from pynput import keyboard
+from PIL import Image, ImageTk
+
 
 class AutoClickerApp(customtkinter.CTk):
     def __init__(self):
@@ -61,6 +63,8 @@ class AutoClickerApp(customtkinter.CTk):
         self.font_small = customtkinter.CTkFont(family='Comfortaa', size=15)
         self.font_small_thick = customtkinter.CTkFont(family='Comfortaa', size=15, weight='bold')
         self.font_mini = customtkinter.CTkFont(family='Comfortaa', size=11)
+
+        self.icon_histogram = ImageTk.PhotoImage(Image.open("assets/histogram.png").resize((20,20)))
 
     def setup_ui(self):
         main_frame = customtkinter.CTkFrame(master=self)
@@ -319,6 +323,10 @@ class AutoClickerApp(customtkinter.CTk):
                                                        fg_color="#3b3b3b", hover_color="#636363",
                                                        border_color="#222222", border_width=3, command=change_hotkey_popup)
         change_hotkey_button.place(relx=0.52, rely=0.5, relwidth=0.47, relheight=0.4)
+
+        # Overall stats interface
+        stats_open_button = customtkinter.CTkButton(master=main_frame, image=self.icon_histogram, text="", fg_color="#3b3b3b", width=20)
+        stats_open_button.place(relx=0.02, rely=0.01)
 
 
 
