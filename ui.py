@@ -123,10 +123,13 @@ class AutoClickerApp(customtkinter.CTk):
         mouse_cps_frame = customtkinter.CTkFrame(master=mouse_frame, fg_color="#282928")
         mouse_cps_frame.place(relx=0.01, rely=0.32, relwidth=0.98, relheight=0.4)
 
-        customtkinter.CTkLabel(master=mouse_cps_frame, text="Clickspeed in CPS:", font=self.font_small_thick).pack(pady=2)
+        mouse_cps_frame.columnconfigure((0, 1, 2), weight=1, uniform='a')
+        mouse_cps_frame.rowconfigure((0, 1, 2, 3), weight=1, uniform='a')
+
+        customtkinter.CTkLabel(master=mouse_cps_frame, text="Clickspeed in CPS:", font=self.font_small_thick).grid(column=0, row=0, columnspan=3)
 
         self.mouse_cps_entry = customtkinter.CTkEntry(master=mouse_cps_frame, font=self.font_small, width=50)
-        self.mouse_cps_entry.pack(pady=10)
+        self.mouse_cps_entry.grid(column=1, row=1, rowspan=3, pady=19)
 
         # Interval unit frame
         mouse_interval_frame = customtkinter.CTkFrame(master=mouse_frame, fg_color="#282928")
@@ -325,8 +328,10 @@ class AutoClickerApp(customtkinter.CTk):
         change_hotkey_button.place(relx=0.52, rely=0.5, relwidth=0.47, relheight=0.4)
 
         # Overall stats interface
-        stats_open_button = customtkinter.CTkButton(master=main_frame, image=self.icon_histogram, text="", fg_color="#3b3b3b", width=20)
+        stats_open_button = customtkinter.CTkButton(master=main_frame, image=self.icon_histogram, text="", fg_color="#3b3b3b",
+                                                    width=20, hover_color="#636363")
         stats_open_button.place(relx=0.02, rely=0.01)
+
 
 
 
