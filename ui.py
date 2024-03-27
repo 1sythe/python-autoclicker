@@ -233,8 +233,8 @@ class AutoClickerApp(customtkinter.CTk):
 
 
         # Change Hotkey button
-        self.hotkey_start = "f5"
-        self.hotkey_stop = "f6"
+        self.hotkey_start = "F5"
+        self.hotkey_stop = "F6"
 
 
 
@@ -256,38 +256,38 @@ class AutoClickerApp(customtkinter.CTk):
                                                                                                 relwidth=0.25, relheight=0.2)
             # Hotkey change logic
             def change_start_hotkey(filler):
-                hotkey_window_info.configure(text="Recording press ESC to cancel")
+                hotkey_window_info.configure(text="Recording, press ESC to cancel")
                 start_hotkey_entry.configure(state=NORMAL)
                 start_hotkey_entry.delete(0, END)
                 self.hotkey_window.update()
                 with keyboard.Events() as events:
                     for event in events:
                         if isinstance(event, keyboard.Events.Press):
-                            if event.key == keyboard.Key.esc:
+                            if event.key == keyboard.Key.esc or format(event.key).strip("Key.'").upper() == self.hotkey_stop:
                                 start_hotkey_entry.insert(0, self.hotkey_start)
                                 start_hotkey_entry.configure(state=DISABLED)
                                 hotkey_window_info.configure(text="Click to change")
                                 break
-                            self.hotkey_start = format(event.key).strip("Key.'")
+                            self.hotkey_start = format(event.key).strip("Key.'").upper()
                             start_hotkey_entry.insert(0, self.hotkey_start)
                             start_hotkey_entry.configure(state=DISABLED)
                             hotkey_window_info.configure(text="Click to change")
                             break
 
             def change_stop_hotkey(filler):
-                hotkey_window_info.configure(text="Recording press ESC to cancel")
+                hotkey_window_info.configure(text="Recording, press ESC to cancel")
                 stop_hotkey_entry.configure(state=NORMAL)
                 stop_hotkey_entry.delete(0, END)
                 self.hotkey_window.update()
                 with keyboard.Events() as events:
                     for event in events:
                         if isinstance(event, keyboard.Events.Press):
-                            if event.key == keyboard.Key.esc:
+                            if event.key == keyboard.Key.esc or format(event.key).strip("Key.'").upper() == self.hotkey_start:
                                 stop_hotkey_entry.insert(0, self.hotkey_stop)
                                 stop_hotkey_entry.configure(state=DISABLED)
                                 hotkey_window_info.configure(text="Click to change")
                                 break
-                            self.hotkey_stop = format(event.key).strip("Key.'")
+                            self.hotkey_stop = format(event.key).strip("Key.'").upper()
                             stop_hotkey_entry.insert(0, self.hotkey_stop)
                             stop_hotkey_entry.configure(state=DISABLED)
                             hotkey_window_info.configure(text="Click to change")
@@ -309,7 +309,12 @@ class AutoClickerApp(customtkinter.CTk):
                                                         wraplength=110, justify="center")
             hotkey_window_info.pack(pady=16)
 
-            customtkinter.CTkButton(master=self.hotkey_window, text="Save", command=self.hotkey_window.destroy).place(relx=0.375, rely=0.7,
+            def update_mainframe_hotkeys():
+                start_button.configure(text=f"Start ({self.hotkey_start})")
+                stop_button.configure(text=f"Stop ({self.hotkey_stop})")
+                self.hotkey_window.destroy()
+
+            customtkinter.CTkButton(master=self.hotkey_window, text="Save", command=update_mainframe_hotkeys).place(relx=0.375, rely=0.7,
                                                                                                      relwidth=0.25, relheight=0.2)
             self.hotkey_window.focus()
 
