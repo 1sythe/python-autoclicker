@@ -31,8 +31,8 @@ class AutoClickerApp(customtkinter.CTk):
         self.window = customtkinter.CTkToplevel()
         self.window.destroy()
 
-        self.hotkey_window = customtkinter.CTkToplevel()
-        self.hotkey_window.destroy()
+        self.settings_window = customtkinter.CTkToplevel()
+        self.settings_window.destroy()
 
         self.stats_window = customtkinter.CTkToplevel()
         self.stats_window.destroy()
@@ -67,6 +67,7 @@ class AutoClickerApp(customtkinter.CTk):
         self.font_mini = customtkinter.CTkFont(family='Comfortaa', size=11)
 
         self.icon_histogram = customtkinter.CTkImage(Image.open("assets/histogram.png"), size=(20, 20))
+        self.icon_settings = customtkinter.CTkImage(Image.open("assets/settings-icon.png"), size=(25, 25))
 
     def setup_ui(self):
         main_frame = customtkinter.CTkFrame(master=self)
@@ -212,11 +213,14 @@ class AutoClickerApp(customtkinter.CTk):
 
 
         # Start/Stop buttons
-        start_button = customtkinter.CTkButton(master=operating_frame, text="Start (F5)", font=self.font_medium,
+        self.hotkey_start = "F5"
+        self.hotkey_stop = "F6"
+
+        start_button = customtkinter.CTkButton(master=operating_frame, text=f"Start ({self.hotkey_start})", font=self.font_medium,
                                                border_color="#222222", border_width=3, command=start_clicker)
         start_button.place(relx=0.01, rely=0.02, relwidth=0.47, relheight=0.4)
 
-        stop_button = customtkinter.CTkButton(master=operating_frame, text="Stop (F6)", font=self.font_medium,
+        stop_button = customtkinter.CTkButton(master=operating_frame, text=f"Stop ({self.hotkey_stop})", font=self.font_medium,
                                               border_color="#222222", border_width=3, command=self.stop_clicker)
         stop_button.place(relx=0.52, rely=0.02, relwidth=0.47, relheight=0.4)
 
@@ -241,32 +245,40 @@ class AutoClickerApp(customtkinter.CTk):
         self.startdelay_slider.set(0)
 
 
-        # Change Hotkey button
-        self.hotkey_start = "F5"
-        self.hotkey_stop = "F6"
+        # Settings
 
 
-        def open_hotkey_window():
+        def open_settings_window():
 
-            if self.hotkey_window.winfo_exists():
-                self.hotkey_window.focus()
+            if self.settings_window.winfo_exists():
+                self.settings_window.focus()
                 return
 
-            self.hotkey_window = customtkinter.CTkToplevel()
-            self.hotkey_window.title("Start/Stop Hotkeys")
-            self.hotkey_window.geometry("300x100")
-            self.hotkey_window.resizable(False, False)
+            self.settings_window = customtkinter.CTkToplevel()
+            self.settings_window.title("Settings")
+            self.settings_window.geometry("250x300")
+            self.settings_window.resizable(False, False)
 
-            customtkinter.CTkLabel(master=self.hotkey_window, text="Start", font=self.font_small_thick).place(relx=0.1, rely=0.15,
-                                                                                                 relwidth=0.25, relheight=0.2)
-            customtkinter.CTkLabel(master=self.hotkey_window, text="Stop", font=self.font_small_thick).place(relx=0.65, rely=0.15,
-                                                                                                relwidth=0.25, relheight=0.2)
+            customtkinter.CTkLabel(master=self.settings_window, text="Settings", font=self.font_large).pack(pady=10)
+
+            # Settings for Hotkeys
+            settings_hotkey_frame = customtkinter.CTkFrame(master=self.settings_window, fg_color="#3b3b3b", height=300)
+            settings_hotkey_frame.pack(pady=5, padx=8, fill=X)
+
+            settings_hotkey_frame.columnconfigure((0, 1, 2), weight=1, uniform='a')
+            settings_hotkey_frame.rowconfigure((0, 1, 2, 3), weight=1, uniform='a')
+
+            customtkinter.CTkLabel(master=settings_hotkey_frame, text="Hotkeys", font=self.font_medium).grid(column=0, row=0, columnspan=3)
+            hotkey_window_info = customtkinter.CTkLabel(master=settings_hotkey_frame, text="Click to change", font=self.font_small)
+            hotkey_window_info.grid(column=0, row=1, columnspan=3)
+            customtkinter.CTkLabel(master=settings_hotkey_frame, text="Start:", font=self.font_small_thick).grid(column=0, row=2, columnspan=2)
+            customtkinter.CTkLabel(master=settings_hotkey_frame, text="Stop:", font=self.font_small_thick).grid(column=0, row=3, columnspan=2)
             # Hotkey change logic
             def change_start_hotkey(filler):
                 hotkey_window_info.configure(text="Recording, press ESC to cancel")
+                self.settings_window.update()
                 start_hotkey_entry.configure(state=NORMAL)
                 start_hotkey_entry.delete(0, END)
-                self.hotkey_window.update()
                 with keyboard.Events() as events:
                     for event in events:
                         if event.key == keyboard.Key.esc or format(event.key).strip("Key.'").upper() == self.hotkey_stop:
@@ -285,7 +297,7 @@ class AutoClickerApp(customtkinter.CTk):
 
             def change_stop_hotkey(filler):
                 hotkey_window_info.configure(text="Recording, press ESC to cancel")
-                self.hotkey_window.update()
+                self.settings_window.update()
                 stop_hotkey_entry.configure(state=NORMAL)
                 stop_hotkey_entry.delete(0, END)
                 with keyboard.Events() as events:
@@ -305,30 +317,26 @@ class AutoClickerApp(customtkinter.CTk):
                             break
 
 
-            start_hotkey_entry = customtkinter.CTkEntry(master=self.hotkey_window, font=self.font_small_thick)
+            start_hotkey_entry = customtkinter.CTkEntry(master=settings_hotkey_frame, font=self.font_small_thick, width=60)
             start_hotkey_entry.insert(0, self.hotkey_start)
             start_hotkey_entry.bind("<1>", change_start_hotkey)
 
-            stop_hotkey_entry = customtkinter.CTkEntry(master=self.hotkey_window, font=self.font_small_thick)
+            stop_hotkey_entry = customtkinter.CTkEntry(master=settings_hotkey_frame, font=self.font_small_thick, width=60)
             stop_hotkey_entry.insert(0, self.hotkey_stop)
             stop_hotkey_entry.bind("<1>", change_stop_hotkey)
 
-            start_hotkey_entry.place(relx=0.15, rely=0.35, relwidth=0.15, relheight=0.2)
-            stop_hotkey_entry.place(relx=0.7, rely=0.35, relwidth=0.15, relheight=0.2)
-
-            hotkey_window_info = customtkinter.CTkLabel(master=self.hotkey_window, text="Click to change", font=self.font_small,
-                                                        wraplength=110, justify="center")
-            hotkey_window_info.pack(pady=16)
-
-            customtkinter.CTkButton(master=self.hotkey_window, text="Save", command=self.hotkey_window.destroy).place(relx=0.375, rely=0.7,
-                                                                                                     relwidth=0.25, relheight=0.2)
-            self.hotkey_window.focus()
+            start_hotkey_entry.grid(column=1, row=2, columnspan=2)
+            stop_hotkey_entry.grid(column=1, row=3, columnspan=2)
 
 
-        change_hotkey_button = customtkinter.CTkButton(master=operating_frame, text="Change Hotkeys", font=self.font_medium,
-                                                       fg_color="#3b3b3b", hover_color="#636363",
-                                                       border_color="#222222", border_width=3, command=open_hotkey_window)
-        change_hotkey_button.place(relx=0.52, rely=0.5, relwidth=0.47, relheight=0.4)
+
+            customtkinter.CTkButton(master=self.settings_window, text="Save", command=self.settings_window.destroy).pack()
+            self.settings_window.focus()
+
+
+        open_settings_button = customtkinter.CTkButton(master=main_frame, image=self.icon_settings, text="", fg_color="#3b3b3b", hover_color="#636363",
+                                                    command=open_settings_window)
+        open_settings_button.place(relx=0.85, rely=0.01, relwidth=0.13, relheight=0.08)
 
 
         # Overall stats interface
@@ -363,8 +371,8 @@ class AutoClickerApp(customtkinter.CTk):
 
 
         stats_open_button = customtkinter.CTkButton(master=main_frame, image=self.icon_histogram, text="", font=self.font_small, fg_color="#3b3b3b",
-                                                     width=20, hover_color="#636363", command=open_stats_window)
-        stats_open_button.place(relx=0.02, rely=0.01)
+                                                     hover_color="#636363", command=open_stats_window)
+        stats_open_button.place(relx=0.02, rely=0.01, relwidth=0.13, relheight=0.08)
 
 
 
