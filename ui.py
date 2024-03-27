@@ -10,6 +10,8 @@ from tkinter import ttk
 from clicker import Clicker
 from pynput.mouse import Controller, Button
 from pynput import keyboard
+from PIL import Image, ImageTk
+
 
 class AutoClickerApp(customtkinter.CTk):
     def __init__(self):
@@ -61,6 +63,8 @@ class AutoClickerApp(customtkinter.CTk):
         self.font_small = customtkinter.CTkFont(family='Comfortaa', size=15)
         self.font_small_thick = customtkinter.CTkFont(family='Comfortaa', size=15, weight='bold')
         self.font_mini = customtkinter.CTkFont(family='Comfortaa', size=11)
+
+        self.icon_histogram = ImageTk.PhotoImage(Image.open("assets/histogram.png").resize((20,20)))
 
     def setup_ui(self):
         main_frame = customtkinter.CTkFrame(master=self)
@@ -119,10 +123,13 @@ class AutoClickerApp(customtkinter.CTk):
         mouse_cps_frame = customtkinter.CTkFrame(master=mouse_frame, fg_color="#282928")
         mouse_cps_frame.place(relx=0.01, rely=0.32, relwidth=0.98, relheight=0.4)
 
-        customtkinter.CTkLabel(master=mouse_cps_frame, text="Clickspeed in CPS:", font=self.font_small_thick).pack(pady=2)
+        mouse_cps_frame.columnconfigure((0, 1, 2), weight=1, uniform='a')
+        mouse_cps_frame.rowconfigure((0, 1, 2, 3), weight=1, uniform='a')
+
+        customtkinter.CTkLabel(master=mouse_cps_frame, text="Clickspeed in CPS:", font=self.font_small_thick).grid(column=0, row=0, columnspan=3)
 
         self.mouse_cps_entry = customtkinter.CTkEntry(master=mouse_cps_frame, font=self.font_small, width=50)
-        self.mouse_cps_entry.pack(pady=10)
+        self.mouse_cps_entry.grid(column=1, row=1, rowspan=3, pady=19)
 
         # Interval unit frame
         mouse_interval_frame = customtkinter.CTkFrame(master=mouse_frame, fg_color="#282928")
@@ -237,7 +244,6 @@ class AutoClickerApp(customtkinter.CTk):
         self.hotkey_stop = "F6"
 
 
-
         def change_hotkey_popup():
 
             if self.hotkey_window.winfo_exists():
@@ -272,6 +278,7 @@ class AutoClickerApp(customtkinter.CTk):
                             start_hotkey_entry.insert(0, self.hotkey_start)
                             start_hotkey_entry.configure(state=DISABLED)
                             hotkey_window_info.configure(text="Click to change")
+                            start_button.configure(text=f"Start ({self.hotkey_start})")
                             break
 
             def change_stop_hotkey(filler):
@@ -291,6 +298,7 @@ class AutoClickerApp(customtkinter.CTk):
                             stop_hotkey_entry.insert(0, self.hotkey_stop)
                             stop_hotkey_entry.configure(state=DISABLED)
                             hotkey_window_info.configure(text="Click to change")
+                            stop_button.configure(text=f"Stop ({self.hotkey_stop})")
                             break
 
 
@@ -309,12 +317,7 @@ class AutoClickerApp(customtkinter.CTk):
                                                         wraplength=110, justify="center")
             hotkey_window_info.pack(pady=16)
 
-            def update_mainframe_hotkeys():
-                start_button.configure(text=f"Start ({self.hotkey_start})")
-                stop_button.configure(text=f"Stop ({self.hotkey_stop})")
-                self.hotkey_window.destroy()
-
-            customtkinter.CTkButton(master=self.hotkey_window, text="Save", command=update_mainframe_hotkeys).place(relx=0.375, rely=0.7,
+            customtkinter.CTkButton(master=self.hotkey_window, text="Save", command=self.hotkey_window.destroy()).place(relx=0.375, rely=0.7,
                                                                                                      relwidth=0.25, relheight=0.2)
             self.hotkey_window.focus()
 
@@ -323,6 +326,12 @@ class AutoClickerApp(customtkinter.CTk):
                                                        fg_color="#3b3b3b", hover_color="#636363",
                                                        border_color="#222222", border_width=3, command=change_hotkey_popup)
         change_hotkey_button.place(relx=0.52, rely=0.5, relwidth=0.47, relheight=0.4)
+
+        # Overall stats interface
+        stats_open_button = customtkinter.CTkButton(master=main_frame, image=self.icon_histogram, text="", fg_color="#3b3b3b",
+                                                    width=20, hover_color="#636363")
+        stats_open_button.place(relx=0.02, rely=0.01)
+
 
 
 
