@@ -1,6 +1,9 @@
 import time
 import threading
+import sqlite3
+
 from pynput.mouse import Button, Controller
+from pynput.keyboard import Key, Controller as KeyboardController
 
 
 def uitestlog(msg):
@@ -13,36 +16,101 @@ class Clicker(threading.Thread):
         threading.Thread.__init__(self)
         self.interval = interval
         self.mouse = mouse
-        self.button = Button.left
         self.running = False
+
+        # 0 = Mouse; 1 = Keyboard
+        self.mode = 0
+
+        self.mouse_key = Button.left
+        self.keyboard_key = Key.space
+
+        self.start_key = Key.f1
+        self.stop_key = Key.f2
+
+        self.load_config()
+
+    def load_config(self):
+        conn = sqlite3.connect("data.db")
+        cursor = conn.cursor()
+
+        # Create table if not exists
+        cursor.execute('''CREATE TABLE IF NOT EXISTS config (
+                            id INTEGER PRIMARY KEY,
+                            mouse_button TEXT,
+                            keyboard_key TEXT,
+                            start_key TEXT,
+                            stop_key TEXT)''')
+
+        # Fetch config from the database
+        cursor.execute("SELECT * FROM config WHERE id = 1")
+        row = cursor.fetchone()
+        if row:
+            self.mouse_key = getattr(Button, row[1])
+            self.keyboard_key = getattr(Key, row[2])
+            self.start_key = getattr(Key, row[3])
+            self.stop_key = getattr(Key, row[4])
+
+        conn.commit()
+        conn.close()
+
+    def save_config(self):
+        conn = sqlite3.connect("data.db")
+        cursor = conn.cursor()
+
+        # Save config to the database
+        cursor.execute(
+            "REPLACE INTO config (id, mouse_button, keyboard_key, start_key, stop_key) VALUES (?, ?, ?, ?, ?)",
+            (1, self.mouse_key.name, self.keyboard_key.name, self.start_key.name, self.stop_key.name))
+
+        conn.commit()
+        conn.close()
+
+    def update_mouse_button(self, new_button):
+        self.mouse_key = new_button
+        self.save_config()
+
+    def update_keyboard_key(self, new_key):
+        self.keyboard_key = new_key
+        self.save_config()
+
+    def update_start_key(self, new_start_key):
+        self.start_key = new_start_key
+        self.save_config()
+
+    def update_stop_key(self, new_stop_key):
+        self.stop_key = new_stop_key
+        self.save_config()
 
     def click(self):
         self.running = True
         uitestlog("AC would start now")
-        uitestlog(f"[Stats] Interval: {str(self.interval)}s ({1 / self.interval} CPS) | {str(self.button)}")
-        #while self.running:
-        #    self.mouse.click(self.button)
-        #    time.sleep(self.interval)
+        uitestlog(
+            f"[Stats] Interval: {str(self.interval)}s | Mode: {'Mouse' if self.mode == 0 else 'Keyboard'} | Mouse Button: {str(self.mouse_key)} | Keyboard Key: {str(self.keyboard_key)}")
 
-        # This is only for UI testing purposes
         while self.running:
-            uitestlog("Click")
-            time.sleep(self.interval)
+            if self.mode == 0:  # Mouse mode
+                self.mouse.click(self.mouse_key)
 
-        uitestlog("AC would stop now")
+            else:  # Keyboard mode
+                with KeyboardController().pressed(self.keyboard_key):
+                    pass
+
+            time.sleep(self.interval)
 
     def stop(self):
         self.running = False
+        self.save_config()
 
 
 if __name__ == "__main__":
     clicker = Clicker(0.1, Controller())
-    clicker.start()
 
-    print("Clicking in 5 sec")
-    time.sleep(5)
-
-    clicker.click()
+    clicker.mode = 0
+    threading.Thread(target=clicker.click).start()
     time.sleep(5)
     clicker.stop()
 
+    clicker.mode = 1
+    threading.Thread(target=clicker.click).start()
+    time.sleep(5)
+    clicker.stop()
