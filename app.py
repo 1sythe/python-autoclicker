@@ -1,6 +1,4 @@
 import tkinter
-import tkinter as tk
-import tkinter.font as font
 import customtkinter
 import threading
 
@@ -20,7 +18,6 @@ class AutoClickerApp(customtkinter.CTk):
         self.resizable(False, False)
         self.title("AutoClicker")
         self.option_add("*tearOff", False)
-
 
         self.setup_visuals()
         self.setup_ui()
