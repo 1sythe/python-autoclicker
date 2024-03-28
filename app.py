@@ -19,11 +19,11 @@ class AutoClickerApp(customtkinter.CTk):
         self.title("AutoClicker")
         self.option_add("*tearOff", False)
 
-        self.setup_visuals()
-        self.setup_ui()
-
         self.clicker = Clicker(1, Controller())
         self.click_thread = threading.Thread(target=self.clicker.click, daemon=True)
+
+        self.setup_visuals()
+        self.setup_ui()
 
         self.window = customtkinter.CTkToplevel()
         self.window.destroy()
