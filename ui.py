@@ -213,8 +213,8 @@ class AutoClickerApp(customtkinter.CTk):
 
 
         # Start/Stop buttons
-        self.hotkey_start = "F5"
-        self.hotkey_stop = "F6"
+        self.hotkey_start = self.clicker.start_key
+        self.hotkey_stop = self.clicker.stop_key
 
         start_button = customtkinter.CTkButton(master=operating_frame, text=f"Start ({self.hotkey_start})", font=self.font_medium,
                                                border_color="#222222", border_width=3, command=start_clicker)
@@ -287,7 +287,7 @@ class AutoClickerApp(customtkinter.CTk):
                                 hotkey_window_info.configure(text="Click to change")
                                 break
                         else:
-                            #Clicker.update_start_key(self, new_start_key=event.key)
+                            self.clicker.update_start_key(event.key)
                             self.hotkey_start = format(event.key).strip("Key.'").upper()
                             start_hotkey_entry.insert(0, self.hotkey_start)
                             start_hotkey_entry.configure(state=DISABLED)
@@ -308,7 +308,7 @@ class AutoClickerApp(customtkinter.CTk):
                             hotkey_window_info.configure(text="Click to change")
                             break
                         else:
-                            #Clicker.update_stop_key(self, new_stop_key=event.key)
+                            self.clicker.update_stop_key(event.key)
                             self.hotkey_stop = format(event.key).strip("Key.'").upper()
                             stop_hotkey_entry.insert(0, self.hotkey_stop)
                             stop_hotkey_entry.configure(state=DISABLED)
