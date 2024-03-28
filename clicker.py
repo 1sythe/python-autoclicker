@@ -36,6 +36,7 @@ class Clicker(threading.Thread):
         # Create table if not exists
         cursor.execute('''CREATE TABLE IF NOT EXISTS config (
                             id INTEGER PRIMARY KEY,
+                            mode INTEGER,
                             mouse_button TEXT,
                             keyboard_key TEXT,
                             start_key TEXT,
@@ -45,10 +46,14 @@ class Clicker(threading.Thread):
         cursor.execute("SELECT * FROM config WHERE id = 1")
         row = cursor.fetchone()
         if row:
-            self.mouse_key = getattr(Button, row[1])
-            self.keyboard_key = getattr(Key, row[2])
-            self.start_key = getattr(Key, row[3])
-            self.stop_key = getattr(Key, row[4])
+            self.mode = row[1]
+            self.mouse_key = getattr(Button, row[2])
+            self.keyboard_key = getattr(Key, row[3]) if row[3] != 'None' else None
+            self.start_key = getattr(Key, row[4])
+            try:
+                self.stop_key = getattr(Key, row[5])
+            except AttributeError:
+                self.stop_key = Key.esc  # Default stop key if the retrieved key is not valid
 
         conn.commit()
         conn.close()
@@ -57,10 +62,17 @@ class Clicker(threading.Thread):
         conn = sqlite3.connect("data.db")
         cursor = conn.cursor()
 
+        # Convert Key object to string representation if available
+        keyboard_key_name = self.keyboard_key.name if hasattr(self.keyboard_key, 'name') else str(self.keyboard_key)
+        start_key_name = self.start_key.name if hasattr(self.start_key, 'name') else str(self.start_key)
+        stop_key_name = self.stop_key.name if hasattr(self.stop_key, 'name') else str(self.stop_key)
+
+
+
         # Save config to the database
         cursor.execute(
             "REPLACE INTO config (id, mouse_button, keyboard_key, start_key, stop_key) VALUES (?, ?, ?, ?, ?)",
-            (1, self.mouse_key.name, self.keyboard_key.name, self.start_key.name, self.stop_key.name))
+            (1, self.mouse_key.name, keyboard_key_name, start_key_name, stop_key_name))
 
         conn.commit()
         conn.close()
