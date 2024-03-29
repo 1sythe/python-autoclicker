@@ -210,8 +210,8 @@ class AutoClickerApp(customtkinter.CTk):
 
 
         # Start/Stop buttons
-        self.hotkey_start = self.clicker.start_key.name.upper()
-        self.hotkey_stop = self.clicker.stop_key.name.upper()
+        self.hotkey_start = self.clicker.start_key.name.upper() if hasattr(self.clicker.start_key, 'name') else str(self.clicker.start_key)
+        self.hotkey_stop = self.clicker.stop_key.name.upper() if hasattr(self.clicker.stop_key, 'name') else str(self.clicker.stop_key)
 
         start_button = customtkinter.CTkButton(master=operating_frame, text=f"Start ({self.hotkey_start})", font=self.font_medium,
                                                border_color="#222222", border_width=3, command=start_clicker)
