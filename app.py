@@ -14,7 +14,7 @@ class AutoClickerApp(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
-        self.geometry('300x400')
+        self.geometry('300x375')
         self.resizable(False, False)
         self.title("AutoClicker")
         self.option_add("*tearOff", False)
@@ -87,7 +87,7 @@ class AutoClickerApp(customtkinter.CTk):
 
         # Mouse autoclicker frame, content
         mouse_frame = customtkinter.CTkFrame(master=main_frame, border_width=2, border_color="#3b3b3b")
-        mouse_frame.place(relx=0.01, rely=0.18, relwidth=0.98, relheight=0.5)
+        mouse_frame.place(relx=0.01, rely=0.18, relwidth=0.98, relheight=0.54)
 
         mouse_frame.columnconfigure((0, 1, 2, 3), weight=1, uniform='a')
         mouse_frame.rowconfigure((0, 1, 2, 3, 4, 5, 6), weight=1, uniform='a')
@@ -173,7 +173,7 @@ class AutoClickerApp(customtkinter.CTk):
 
         # Key autoclicker frame, content
         key_frame = customtkinter.CTkFrame(master=main_frame, border_width=2, border_color="#3b3b3b")
-        key_frame.place(relx=0.01, rely=0.18, relwidth=0.98, relheight=0.5)
+        key_frame.place(relx=0.01, rely=0.18, relwidth=0.98, relheight=0.54)
         key_frame.lower()
 
 
@@ -182,10 +182,12 @@ class AutoClickerApp(customtkinter.CTk):
 
         # Operating(start/stop) frame, content
         operating_frame = customtkinter.CTkFrame(master=main_frame)
-        operating_frame.place(relx=0, rely=0.69, relwidth=1, relheight=0.31)
+        operating_frame.place(relx=0, rely=0.74, relwidth=1, relheight=0.3)
 
 
         def start_clicker():
+            self.start_button.configure(state=DISABLED)
+            self.stop_button.configure(state=NORMAL)
             if self.clicker.running:
                 return
 
@@ -210,35 +212,34 @@ class AutoClickerApp(customtkinter.CTk):
 
 
         # Start/Stop buttons
-        self.hotkey_start = self.clicker.start_key.name.upper() if hasattr(self.clicker.start_key, 'name') else str(self.clicker.start_key)
-        self.hotkey_stop = self.clicker.stop_key.name.upper() if hasattr(self.clicker.stop_key, 'name') else str(self.clicker.stop_key)
+        self.hotkey_start = "f2"#self.clicker.start_key.name.upper() if hasattr(self.clicker.start_key, 'name') else str(self.clicker.start_key)
+        self.hotkey_stop = "f3"#self.clicker.stop_key.name.upper() if hasattr(self.clicker.stop_key, 'name') else str(self.clicker.stop_key)
 
-        start_button = customtkinter.CTkButton(master=operating_frame, text=f"Start ({self.hotkey_start})", font=self.font_medium,
+        self.start_button = customtkinter.CTkButton(master=operating_frame, text=f"Start ({self.hotkey_start})", font=self.font_medium,
                                                border_color="#222222", border_width=3, command=start_clicker)
-        start_button.place(relx=0.01, rely=0.02, relwidth=0.47, relheight=0.4)
+        self.start_button.place(relx=0.01, rely=0.35, relwidth=0.47, relheight=0.45)
 
-        stop_button = customtkinter.CTkButton(master=operating_frame, text=f"Stop ({self.hotkey_stop})", font=self.font_medium,
-                                              border_color="#222222", border_width=3, command=self.stop_clicker)
-        stop_button.place(relx=0.52, rely=0.02, relwidth=0.47, relheight=0.4)
+        self.stop_button = customtkinter.CTkButton(master=operating_frame, text=f"Stop ({self.hotkey_stop})", font=self.font_medium,
+                                              border_color="#222222", border_width=3, command=self.stop_clicker, state=DISABLED)
+        self.stop_button.place(relx=0.52, rely=0.35, relwidth=0.47, relheight=0.45)
 
-        ## Operating Settings
 
         # Delay slider
-        customtkinter.CTkLabel(master=operating_frame, text="Set start delay:", font=self.font_small_thick).place(relx=0.02, rely=0.5)
+        customtkinter.CTkLabel(master=operating_frame, text="Set start delay:", font=self.font_small_thick).place(relx=0.02, rely=0.05)
 
         def startdelay_display_update(value):
             self.startdelay_display.configure(text=f"{value}s")
             self.startdelay = value
 
         self.startdelay_display = customtkinter.CTkLabel(master=operating_frame, text="0.0s", font=self.font_small)
-        self.startdelay_display.place(relx=0.4, rely=0.5)
+        self.startdelay_display.place(relx=0.4, rely=0.05)
 
         self.startdelay = 0
 
         self.startdelay_slider = customtkinter.CTkSlider(master=operating_frame, from_=0, to=15, number_of_steps=15,
                                                           command=startdelay_display_update)
 
-        self.startdelay_slider.place(relx=0.01, rely=0.75, relwidth=0.45)
+        self.startdelay_slider.place(relx=0.55, rely=0.11, relwidth=0.45)
         self.startdelay_slider.set(0)
 
 
@@ -289,7 +290,7 @@ class AutoClickerApp(customtkinter.CTk):
                             start_hotkey_entry.insert(0, self.hotkey_start)
                             start_hotkey_entry.configure(state=DISABLED)
                             hotkey_window_info.configure(text="Click to change")
-                            start_button.configure(text=f"Start ({self.hotkey_start})")
+                            self.start_button.configure(text=f"Start ({self.hotkey_start})")
                             break
 
             def change_stop_hotkey(filler):
@@ -310,7 +311,7 @@ class AutoClickerApp(customtkinter.CTk):
                             stop_hotkey_entry.insert(0, self.hotkey_stop)
                             stop_hotkey_entry.configure(state=DISABLED)
                             hotkey_window_info.configure(text="Click to change")
-                            stop_button.configure(text=f"Stop ({self.hotkey_stop})")
+                            self.stop_button.configure(text=f"Stop ({self.hotkey_stop})")
                             break
 
 
@@ -375,9 +376,8 @@ class AutoClickerApp(customtkinter.CTk):
 
 
     def stop_clicker(self):
-        if not self.clicker.running:
-            self.popup(title="Error", message="AutoClicker is not running.")
-            return
+        self.start_button.configure(state=NORMAL)
+        self.stop_button.configure(state=DISABLED)
 
         # TODO: add metrics
         self.clicker.running = False
