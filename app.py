@@ -72,7 +72,7 @@ class AutoClickerApp(customtkinter.CTk):
 
         customtkinter.CTkLabel(master=main_frame, text="AutoClicker", font=self.font_large).pack(side="top")
 
-        # Autoclicker select
+        # Autoclicker selection
         def autoclickerswitch_event(choice):
             if choice == "Keyboard":
                 key_frame.lift()
@@ -92,7 +92,7 @@ class AutoClickerApp(customtkinter.CTk):
         mouse_frame.columnconfigure((0, 1, 2, 3), weight=1, uniform='a')
         mouse_frame.rowconfigure((0, 1, 2, 3, 4, 5, 6), weight=1, uniform='a')
 
-        # Clickspeedunitframe, content
+        # Clickspeedunit selection frame, content
         self.mousespeed_unit_choice = "CPS"
 
         def change_mousespeed_unit():
@@ -158,7 +158,7 @@ class AutoClickerApp(customtkinter.CTk):
         self.mouse_milsec_entry.insert(0, "0")
 
 
-        # Mbutton selection
+        # Mouse button selection
 
         customtkinter.CTkLabel(master=mouse_frame, text="Select Mouse button:", font=self.font_small).grid(column=0, row=6,
                                                                             columnspan=2, rowspan=2, pady=2, padx=2)
@@ -171,7 +171,7 @@ class AutoClickerApp(customtkinter.CTk):
 
 
 
-        # Key autoclicker frame, content
+        # Key autoclicker frame + content
         key_frame = customtkinter.CTkFrame(master=main_frame, border_width=2, border_color="#3b3b3b")
         key_frame.place(relx=0.01, rely=0.18, relwidth=0.98, relheight=0.54)
         key_frame.lower()
@@ -180,7 +180,7 @@ class AutoClickerApp(customtkinter.CTk):
         customtkinter.CTkLabel(master=key_frame, text="Keyboard", font=self.font_medium).pack()
 
 
-        # Operating(start/stop) frame, content
+        # Operating(start/stop) frame + content
         operating_frame = customtkinter.CTkFrame(master=main_frame)
         operating_frame.place(relx=0, rely=0.74, relwidth=1, relheight=0.3)
 
@@ -271,6 +271,7 @@ class AutoClickerApp(customtkinter.CTk):
             hotkey_window_info.grid(column=0, row=1, columnspan=3)
             customtkinter.CTkLabel(master=settings_hotkey_frame, text="Start:", font=self.font_small_thick).grid(column=0, row=2, columnspan=2)
             customtkinter.CTkLabel(master=settings_hotkey_frame, text="Stop:", font=self.font_small_thick).grid(column=0, row=3, columnspan=2)
+
             # Hotkey change logic
             def change_start_hotkey(filler):
                 hotkey_window_info.configure(text="Recording, press ESC to cancel")
@@ -314,7 +315,7 @@ class AutoClickerApp(customtkinter.CTk):
                             self.stop_button.configure(text=f"Stop ({self.hotkey_stop})")
                             break
 
-
+            # Change hotkey buttons
             start_hotkey_entry = customtkinter.CTkEntry(master=settings_hotkey_frame, font=self.font_small_thick, width=60)
             start_hotkey_entry.insert(0, self.hotkey_start)
             start_hotkey_entry.bind("<1>", change_start_hotkey)
