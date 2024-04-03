@@ -62,11 +62,6 @@ class Clicker(threading.Thread):
         conn.commit()
         conn.close()
 
-        print("mouse", self.mouse_key)
-        print("keyboard", self.keyboard_key)
-        print("start", self.start_key)
-        print("stop", self.stop_key)
-
     def save_config(self):
         conn = sqlite3.connect("data.db")
         cursor = conn.cursor()
