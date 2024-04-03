@@ -49,11 +49,14 @@ class Clicker(threading.Thread):
             self.mode = row[0]
             self.mouse_key = getattr(Button, row[1])
             self.keyboard_key = getattr(Key, row[2]) if row[2] != 'None' else None
-            self.start_key = getattr(Key, row[3])
             try:
-                    self.stop_key = getattr(Key, row[4])
+                self.start_key = getattr(Key, row[3])
             except:
-                self.stop_key = Key.esc
+                self.start_key = f'{row[3]}'
+            try:
+                self.stop_key = getattr(Key, row[4])
+            except:
+                self.stop_key = f'{row[4]}'
 
 
         conn.commit()
