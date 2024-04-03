@@ -46,17 +46,23 @@ class Clicker(threading.Thread):
         cursor.execute("SELECT * FROM config WHERE id = 1")
         row = cursor.fetchone()
         if row:
-            self.mode = row[1]
-            self.mouse_key = getattr(Button, row[2])
-            self.keyboard_key = getattr(Key, row[3]) if row[3] != 'None' else None
-            self.start_key = getattr(Key, row[4])
+            self.mode = row[0]
+            self.mouse_key = getattr(Button, row[1])
+            self.keyboard_key = getattr(Key, row[2]) if row[2] != 'None' else None
+            self.start_key = getattr(Key, row[3])
             try:
-                self.stop_key = getattr(Key, row[5])
-            except AttributeError:
-                self.stop_key = Key.esc  # Default stop key if the retrieved key is not valid
+                    self.stop_key = getattr(Key, row[4])
+            except:
+                self.stop_key = Key.esc
+
 
         conn.commit()
         conn.close()
+
+        print("mouse", self.mouse_key)
+        print("keyboard", self.keyboard_key)
+        print("start", self.start_key)
+        print("stop", self.stop_key)
 
     def save_config(self):
         conn = sqlite3.connect("data.db")
