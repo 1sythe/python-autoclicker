@@ -73,15 +73,14 @@ class AutoClickerApp(customtkinter.CTk):
         customtkinter.CTkLabel(master=main_frame, text="AutoClicker", font=self.font_large).pack(side="top")
 
         # Autoclicker selection
-        def autoclickerswitch_event(choice):
+        def switch_mode(choice):
             if choice == "Keyboard":
                 key_frame.lift()
-
             else:
                 mouse_frame.lift()
 
         self.autoclicker_option = customtkinter.CTkOptionMenu(master=main_frame, values=["Mouse", "Keyboard"],
-                                                              width=40, height=25, command=autoclickerswitch_event)
+                                                              width=40, height=25, command=switch_mode)
         self.autoclicker_option.pack(side="top", pady=3)
 
 
@@ -182,7 +181,6 @@ class AutoClickerApp(customtkinter.CTk):
         key_frame.place(relx=0.01, rely=0.18, relwidth=0.98, relheight=0.54)
         key_frame.lower()
 
-
         customtkinter.CTkLabel(master=key_frame, text="Keyboard", font=self.font_medium).pack()
 
 
@@ -192,14 +190,14 @@ class AutoClickerApp(customtkinter.CTk):
 
 
         def start_clicker():
-            self.start_button.configure(state=DISABLED)
-            self.stop_button.configure(state=NORMAL)
             if self.clicker.running:
                 return
 
             if self.mousespeed_unit_choice == "CPS":
                 try:
                     self.clicker.interval = 1 / float(self.mouse_cps_entry.get())
+                    self.start_button.configure(state=DISABLED)
+                    self.stop_button.configure(state=NORMAL)
                 except:
                     self.popup(title="Error", message="Please enter a valid number.")
                     return
@@ -209,6 +207,8 @@ class AutoClickerApp(customtkinter.CTk):
                     seconds = float(self.mouse_sec_entry.get())
                     milliseconds = float(self.mouse_milsec_entry.get()) / 1000
                     self.clicker.interval = minutes + seconds + milliseconds
+                    self.start_button.configure(state=DISABLED)
+                    self.stop_button.configure(state=NORMAL)
                 except:
                     self.popup(title="Error", message="Please enter a valid number.")
                     return
