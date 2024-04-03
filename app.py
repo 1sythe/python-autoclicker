@@ -163,9 +163,15 @@ class AutoClickerApp(customtkinter.CTk):
         customtkinter.CTkLabel(master=mouse_frame, text="Select Mouse button:", font=self.font_small).grid(column=0, row=6,
                                                                             columnspan=2, rowspan=2, pady=2, padx=2)
 
+        def update_mousebuttonselection(selected_option):
+            if selected_option == "Left button":
+                self.clicker.update_mouse_button(Button.left)
+            else:
+                self.clicker.update_mouse_button(Button.right)
 
-        self.mbutton_select_optionmenu = customtkinter.CTkOptionMenu(master=mouse_frame,
-                                                                values=["Left button", "Right button"], width=50, height=20)
+        self.mbutton_select_optionmenu = customtkinter.CTkOptionMenu(master=mouse_frame, values=["Left button", "Right button"],
+                                                                     width=50, height=20, command=update_mousebuttonselection)
+        self.mbutton_select_optionmenu.set(f"{self.clicker.mouse_key.name} Button".capitalize())
 
         self.mbutton_select_optionmenu.grid(column=2, row=6, columnspan=2, rowspan=2, pady=2, sticky="w")
 
@@ -212,8 +218,8 @@ class AutoClickerApp(customtkinter.CTk):
 
 
         # Start/Stop buttons
-        self.hotkey_start = "f2"#self.clicker.start_key.name.upper() if hasattr(self.clicker.start_key, 'name') else str(self.clicker.start_key)
-        self.hotkey_stop = "f3"#self.clicker.stop_key.name.upper() if hasattr(self.clicker.stop_key, 'name') else str(self.clicker.stop_key)
+        self.hotkey_start = self.clicker.start_key.name.upper() if hasattr(self.clicker.start_key, 'name') else str(self.clicker.start_key).strip("'")
+        self.hotkey_stop = self.clicker.stop_key.name.upper() if hasattr(self.clicker.stop_key, 'name') else str(self.clicker.stop_key).strip("'")
 
         self.start_button = customtkinter.CTkButton(master=operating_frame, text=f"Start ({self.hotkey_start})", font=self.font_medium,
                                                border_color="#222222", border_width=3, command=start_clicker)
