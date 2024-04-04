@@ -213,7 +213,7 @@ class AutoClickerApp(customtkinter.CTk):
                     self.popup(title="Error", message="Please enter a valid number.")
                     return
 
-            self.click_thread = threading.Thread(target=self.clicker.click, daemon=True)
+            self.click_thread = threading.Thread(target=self.clicker.click, args=(self.startdelay,), daemon=True)
             self.click_thread.start()
 
 
