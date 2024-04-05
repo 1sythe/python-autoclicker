@@ -83,82 +83,84 @@ class AutoClickerApp(customtkinter.CTk):
                                                               width=40, height=25, command=switch_mode)
         self.autoclicker_option.pack(side="top", pady=3)
 
+        # Unit setupfunction
+        def clickspeedunit_setup(autoclicker_type_frame):
+
+            self.unit_choice = "CPS"
+        # Selection between cps and interval
+            def change_mousespeed_unit():
+                if radio_var.get() == 1:
+                    self.unit_choice = "CPS"
+                    cps_frame.lift()
+
+                else:
+                    self.unit_choice = "Interval"
+                    interval_frame.lift()
+
+            radio_var = tkinter.IntVar(0)
+
+            self.unit_option_cps = customtkinter.CTkRadioButton(master=autoclicker_type_frame, text="CPS", font=self.font_small_thick,
+                                                            command=change_mousespeed_unit, variable=radio_var, value=1, radiobutton_width=11,
+                                                                        radiobutton_height=11, border_width_checked=2, border_width_unchecked=2)
+            self.unit_option_cps.select()
+
+            self.unit_option_interval = customtkinter.CTkRadioButton(master=autoclicker_type_frame, text="Interval", font=self.font_small_thick,
+                                                            command=change_mousespeed_unit, variable=radio_var, value=2, radiobutton_width=11,
+                                                            radiobutton_height=11, border_width_checked=2, border_width_unchecked=2)
+
+            self.unit_option_cps.grid(column=0, row=0, columnspan=3, rowspan=2)
+            self.unit_option_interval.grid(column=2, row=0, columnspan=2, rowspan=2, stick="w")
+
+            # CPS unit frame
+            cps_frame = customtkinter.CTkFrame(master=autoclicker_type_frame, fg_color="#282928")
+            cps_frame.place(relx=0.01, rely=0.32, relwidth=0.98, relheight=0.4)
+
+            cps_frame.columnconfigure((0, 1, 2), weight=1, uniform='a')
+            cps_frame.rowconfigure((0, 1, 2, 3), weight=1, uniform='a')
+
+            customtkinter.CTkLabel(master=cps_frame, text="Clickspeed in CPS:", font=self.font_small_thick).grid(column=0, row=0, columnspan=3)
+
+            self.mouse_cps_entry = customtkinter.CTkEntry(master=cps_frame, font=self.font_small, width=50)
+            self.mouse_cps_entry.grid(column=1, row=1, rowspan=3, pady=19)
+
+            # Interval unit frame
+            interval_frame = customtkinter.CTkFrame(master=autoclicker_type_frame, fg_color="#282928")
+            interval_frame.place(relx=0.01, rely=0.32, relwidth=0.98, relheight=0.4)
+            interval_frame.lower()
+
+            interval_frame.columnconfigure((0, 1, 2), weight=1, uniform='a')
+            interval_frame.rowconfigure((0, 1, 2, 3), weight=1, uniform='a')
+
+            customtkinter.CTkLabel(master=interval_frame,
+                                   text="Clickspeed interval:", font=self.font_small_thick).grid(column=0, row=0, columnspan=3)
+
+            customtkinter.CTkLabel(master=interval_frame, text="Minutes:", font=self.font_mini).grid(column=0, row=1)
+            self.mouse_minute_entry = customtkinter.CTkEntry(master=interval_frame, font=self.font_mini, width=50)
+            self.mouse_minute_entry.grid(column=0, row=1, rowspan=3, pady=19)
+            self.mouse_minute_entry.insert(0, "0")
+
+            customtkinter.CTkLabel(master=interval_frame, text="Seconds:", font=self.font_mini).grid(column=1, row=1)
+            self.mouse_sec_entry = customtkinter.CTkEntry(master=interval_frame, font=self.font_mini, width=50)
+            self.mouse_sec_entry.grid(column=1, row=1, rowspan=3, pady=19)
+            self.mouse_sec_entry.insert(0, "0")
+
+            customtkinter.CTkLabel(master=interval_frame, text="Milliseconds:", font=self.font_mini).grid(column=2, row=1)
+            self.mouse_milsec_entry = customtkinter.CTkEntry(master=interval_frame, font=self.font_mini, width=50)
+            self.mouse_milsec_entry.grid(column=2, row=1, rowspan=3, pady=19)
+            self.mouse_milsec_entry.insert(0, "0")
+
 
         # Mouse autoclicker frame, content
         mouse_frame = customtkinter.CTkFrame(master=main_frame, border_width=2, border_color="#3b3b3b")
         mouse_frame.place(relx=0.01, rely=0.18, relwidth=0.98, relheight=0.54)
 
+
         mouse_frame.columnconfigure((0, 1, 2, 3), weight=1, uniform='a')
         mouse_frame.rowconfigure((0, 1, 2, 3, 4, 5, 6), weight=1, uniform='a')
 
-        # Clickspeedunit selection frame, content
-        self.mousespeed_unit_choice = "CPS"
-
-        def change_mousespeed_unit():
-            if radio_var.get() == 1:
-                self.mousespeed_unit_choice = "CPS"
-                mouse_cps_frame.lift()
-
-            else:
-                self.mousespeed_unit_choice = "Interval"
-                mouse_interval_frame.lift()
-
-        radio_var = tkinter.IntVar(0)
-
-        self.mousespeed_unit_option_cps = customtkinter.CTkRadioButton(master=mouse_frame, text="CPS", font=self.font_small_thick,
-                                                        command=change_mousespeed_unit, variable=radio_var, value=1, radiobutton_width=11,
-                                                                    radiobutton_height=11, border_width_checked=2, border_width_unchecked=2)
-        self.mousespeed_unit_option_cps.select()
-
-        self.mousespeed_unit_option_interval = customtkinter.CTkRadioButton(master=mouse_frame, text="Interval", font=self.font_small_thick,
-                                                        command=change_mousespeed_unit, variable=radio_var, value=2, radiobutton_width=11,
-                                                        radiobutton_height=11, border_width_checked=2, border_width_unchecked=2)
-
-        self.mousespeed_unit_option_cps.grid(column=0, row=0, columnspan=3, rowspan=2)
-        self.mousespeed_unit_option_interval.grid(column=2, row=0, columnspan=2, rowspan=2, stick="w")
-
-
-        # CPS unit frame
-        mouse_cps_frame = customtkinter.CTkFrame(master=mouse_frame, fg_color="#282928")
-        mouse_cps_frame.place(relx=0.01, rely=0.32, relwidth=0.98, relheight=0.4)
-
-        mouse_cps_frame.columnconfigure((0, 1, 2), weight=1, uniform='a')
-        mouse_cps_frame.rowconfigure((0, 1, 2, 3), weight=1, uniform='a')
-
-        customtkinter.CTkLabel(master=mouse_cps_frame, text="Clickspeed in CPS:", font=self.font_small_thick).grid(column=0, row=0, columnspan=3)
-
-        self.mouse_cps_entry = customtkinter.CTkEntry(master=mouse_cps_frame, font=self.font_small, width=50)
-        self.mouse_cps_entry.grid(column=1, row=1, rowspan=3, pady=19)
-
-        # Interval unit frame
-        mouse_interval_frame = customtkinter.CTkFrame(master=mouse_frame, fg_color="#282928")
-        mouse_interval_frame.place(relx=0.01, rely=0.32, relwidth=0.98, relheight=0.4)
-        mouse_interval_frame.lower()
-
-        mouse_interval_frame.columnconfigure((0, 1, 2), weight=1, uniform='a')
-        mouse_interval_frame.rowconfigure((0, 1, 2, 3), weight=1, uniform='a')
-
-        customtkinter.CTkLabel(master=mouse_interval_frame,
-                               text="Clickspeed interval:", font=self.font_small_thick).grid(column=0, row=0, columnspan=3)
-
-        customtkinter.CTkLabel(master=mouse_interval_frame, text="Minutes:", font=self.font_mini).grid(column=0, row=1)
-        self.mouse_minute_entry = customtkinter.CTkEntry(master=mouse_interval_frame, font=self.font_mini, width=50)
-        self.mouse_minute_entry.grid(column=0, row=1, rowspan=3, pady=19)
-        self.mouse_minute_entry.insert(0, "0")
-
-        customtkinter.CTkLabel(master=mouse_interval_frame, text="Seconds:", font=self.font_mini).grid(column=1, row=1)
-        self.mouse_sec_entry = customtkinter.CTkEntry(master=mouse_interval_frame, font=self.font_mini, width=50)
-        self.mouse_sec_entry.grid(column=1, row=1, rowspan=3, pady=19)
-        self.mouse_sec_entry.insert(0, "0")
-
-        customtkinter.CTkLabel(master=mouse_interval_frame, text="Milliseconds:", font=self.font_mini).grid(column=2, row=1)
-        self.mouse_milsec_entry = customtkinter.CTkEntry(master=mouse_interval_frame, font=self.font_mini, width=50)
-        self.mouse_milsec_entry.grid(column=2, row=1, rowspan=3, pady=19)
-        self.mouse_milsec_entry.insert(0, "0")
-
+        clickspeedunit_setup(mouse_frame)
 
         # Mouse button selection
-
         customtkinter.CTkLabel(master=mouse_frame, text="Select Mouse button:", font=self.font_small).grid(column=0, row=6,
                                                                             columnspan=2, rowspan=2, pady=2, padx=2)
 
@@ -179,10 +181,14 @@ class AutoClickerApp(customtkinter.CTk):
         # Key autoclicker frame + content
         key_frame = customtkinter.CTkFrame(master=main_frame, border_width=2, border_color="#3b3b3b")
         key_frame.place(relx=0.01, rely=0.18, relwidth=0.98, relheight=0.54)
-        key_frame.lower()
 
-        customtkinter.CTkLabel(master=key_frame, text="Keyboard", font=self.font_medium).pack()
+        if self.clicker.mode == 0:
+            mouse_frame.lift()
 
+        key_frame.columnconfigure((0, 1, 2, 3), weight=1, uniform='a')
+        key_frame.rowconfigure((0, 1, 2, 3, 4, 5, 6), weight=1, uniform='a')
+
+        clickspeedunit_setup(key_frame)
 
         # Operating(start/stop) frame + content
         operating_frame = customtkinter.CTkFrame(master=main_frame)
