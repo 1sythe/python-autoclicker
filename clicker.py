@@ -47,8 +47,11 @@ class Clicker(threading.Thread):
         row = cursor.fetchone()
         if row:
             self.mouse_key = getattr(Button, row[2]) if row[2] else Button.left
-            self.keyboard_key = getattr(Key, row[3]) if row[3] else Key.space
             #self.start_key = getattr(Key, row[4]) if row[4] else Key.f1 and hasattr(, row[4])
+            try:
+                self.keyboard_key = getattr(Key, row[3])
+            except:
+                self.keyboard_key = f'{row[3]}'
             try:
                 self.start_key = getattr(Key, row[4])
             except:

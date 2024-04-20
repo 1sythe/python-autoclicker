@@ -85,13 +85,12 @@ class AutoClickerApp(customtkinter.CTk):
                                                               width=40, height=25, command=switch_mode)
         self.autoclicker_option.pack(side="top", pady=3)
 
-        # Unit selection
+        # Unit frame
         unit_frame = customtkinter.CTkFrame(master=main_frame, fg_color="#282928")
         unit_frame.place(relx=0.02, rely=0.24, relwidth=0.96, relheight=0.31)
 
-
-        self.unit_choice = "CPS"
         # Selection between cps and interval
+        self.unit_choice = "CPS"
         def change_mousespeed_unit():
             if radio_var.get() == 1:
                 self.unit_choice = "CPS"
@@ -115,7 +114,7 @@ class AutoClickerApp(customtkinter.CTk):
         self.unit_option_cps.place(relx=0.25, rely=0.01, relwidth=0.3)
         self.unit_option_interval.place(relx=0.55, rely=0.01, relwidth=0.3)
 
-            # CPS unit frame
+        # CPS unit frame
         cps_frame = customtkinter.CTkFrame(master=unit_frame, fg_color="#282928")
         cps_frame.place(relx=0.01, rely=0.35, relwidth=0.98, relheight=0.65)
 
@@ -127,7 +126,7 @@ class AutoClickerApp(customtkinter.CTk):
         self.mouse_cps_entry = customtkinter.CTkEntry(master=cps_frame, font=self.font_small, width=50, height=65)
         self.mouse_cps_entry.grid(column=1, row=1, rowspan=3, pady=19)
 
-            # Interval unit frame
+        # Interval unit frame
         interval_frame = customtkinter.CTkFrame(master=unit_frame, fg_color="#282928")
         interval_frame.place(relx=0.01, rely=0.35, relwidth=0.98, relheight=0.65)
         interval_frame.lower()
@@ -165,7 +164,7 @@ class AutoClickerApp(customtkinter.CTk):
 
 
         # Mouse button selection
-        customtkinter.CTkLabel(master=mouse_frame, text="Select Mouse button:", font=self.font_small).grid(column=0, row=6,
+        customtkinter.CTkLabel(master=mouse_frame, text="Select Mouse button:", font=self.font_small).grid(column=0, row=5,
                                                                             columnspan=2, rowspan=2, pady=2, padx=2)
 
         def update_mousebuttonselection(selected_option):
@@ -178,7 +177,7 @@ class AutoClickerApp(customtkinter.CTk):
                                                                      width=50, height=20, command=update_mousebuttonselection)
         self.mbutton_select_optionmenu.set(f"{self.clicker.mouse_key.name} Button".capitalize())
 
-        self.mbutton_select_optionmenu.grid(column=2, row=6, columnspan=2, rowspan=2, pady=2, sticky="w")
+        self.mbutton_select_optionmenu.grid(column=2, row=5, columnspan=2, rowspan=2, pady=2, sticky="w")
 
 
 
@@ -193,6 +192,41 @@ class AutoClickerApp(customtkinter.CTk):
         key_frame.columnconfigure((0, 1, 2, 3), weight=1, uniform='a')
         key_frame.rowconfigure((0, 1, 2, 3, 4, 5, 6), weight=1, uniform='a')
 
+        # Set key
+        customtkinter.CTkLabel(master=key_frame, text="Set key:", font=self.font_small).grid(column=0, row=5,
+                                                                            columnspan=3, rowspan=2, pady=2, padx=2)
+
+
+        # Set autoclickerkey logic
+        self.keyboard_key = self.clicker.keyboard_key.name.upper() if hasattr(self.clicker.keyboard_key, 'name') else str(self.clicker.keyboard_key).strip("'").upper()
+
+        def set_autoclickerkey_key(filler):
+            autoclickerkey_entry.configure(state=NORMAL)
+            autoclickerkey_entry.delete(0, END)
+            autoclickerkey_entry.configure(placeholder_text="Recording", font=self.font_mini)
+            self.update()
+            with keyboard.Events() as events:
+                for event in events:
+                    if event.key == keyboard.Key.esc:
+                        autoclickerkey_entry.configure(font=self.font_small_thick)
+                        autoclickerkey_entry.insert(0, self.keyboard_key)
+                        autoclickerkey_entry.configure(state=DISABLED)
+                        break
+                    else:
+                        self.clicker.update_keyboard_key(event.key)
+                        self.keyboard_key = str(event.key).split(".")[-1].strip("'").upper()
+                        autoclickerkey_entry.configure(font=self.font_small_thick)
+                        autoclickerkey_entry.insert(0, self.keyboard_key)
+                        autoclickerkey_entry.configure(state=DISABLED)
+                        break
+
+        # Set Keyboardkey buttons
+        autoclickerkey_entry = customtkinter.CTkEntry(master=key_frame, font=self.font_small_thick, width=60, height=25)
+        autoclickerkey_entry.insert(0, self.keyboard_key)
+        autoclickerkey_entry.bind("<1>", set_autoclickerkey_key)
+
+        autoclickerkey_entry.grid(column=1, row=5, columnspan=3, rowspan=2, pady=2)
+
 
 
         # Operating(start/stop) frame + content
@@ -204,7 +238,7 @@ class AutoClickerApp(customtkinter.CTk):
             if self.clicker.running:
                 return
 
-            if self.mousespeed_unit_choice == "CPS":
+            if self.unit_choice == "CPS":
                 try:
                     self.clicker.interval = 1 / float(self.mouse_cps_entry.get())
                     self.start_button.configure(state=DISABLED)
@@ -297,14 +331,14 @@ class AutoClickerApp(customtkinter.CTk):
                 start_hotkey_entry.delete(0, END)
                 with keyboard.Events() as events:
                     for event in events:
-                        if event.key == keyboard.Key.esc or format(event.key).strip("Key.'").upper() == self.hotkey_stop:
+                        if event.key == keyboard.Key.esc or str(event.key).split(".")[-1].strip("'").upper() == self.hotkey_stop:
                                 start_hotkey_entry.insert(0, self.hotkey_start)
                                 start_hotkey_entry.configure(state=DISABLED)
                                 hotkey_window_info.configure(text="Click to change")
                                 break
                         else:
                             self.clicker.update_start_key(event.key)
-                            self.hotkey_start = format(event.key).strip("Key.'").upper()
+                            self.hotkey_start = str(event.key).split(".")[-1].strip("'").upper()
                             start_hotkey_entry.insert(0, self.hotkey_start)
                             start_hotkey_entry.configure(state=DISABLED)
                             hotkey_window_info.configure(text="Click to change")
@@ -318,14 +352,14 @@ class AutoClickerApp(customtkinter.CTk):
                 stop_hotkey_entry.delete(0, END)
                 with keyboard.Events() as events:
                     for event in events:
-                        if event.key == keyboard.Key.esc or format(event.key).strip("Key.'").upper() == self.hotkey_start:
+                        if event.key == keyboard.Key.esc or str(event.key).split(".")[-1].strip("'").upper() == self.hotkey_start:
                             stop_hotkey_entry.insert(0, self.hotkey_stop)
                             stop_hotkey_entry.configure(state=DISABLED)
                             hotkey_window_info.configure(text="Click to change")
                             break
                         else:
                             self.clicker.update_stop_key(event.key)
-                            self.hotkey_stop = format(event.key).strip("Key.'").upper()
+                            self.hotkey_stop = str(event.key).split(".")[-1].strip("'").upper()
                             stop_hotkey_entry.insert(0, self.hotkey_stop)
                             stop_hotkey_entry.configure(state=DISABLED)
                             hotkey_window_info.configure(text="Click to change")
